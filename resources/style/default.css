@@ -1,0 +1,126 @@
+@import './font_muli.css';
+
+:root{
+	background-color: #EFEFEF;
+}
+
+.markdown-body{
+	width: 100%;
+	max-width: 1000px;
+	margin: auto;
+	background-color: white;
+	padding: 30px;
+	box-sizing: border-box;
+	position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+
+}
+.markdown-body:before, .markdown-body:after
+{
+	content:"";
+    position:absolute;
+    z-index:-1;
+    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    top:10px;
+    bottom:10px;
+    left:0;
+    right:0;
+    -moz-border-radius:100px / 10px;
+    border-radius:100px / 10px;
+}
+.markdown-body:after
+{
+	right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
+}
+
+.markdown-body *{
+	font-family: 'Muli', sans-serif;
+	hyphens: auto;
+	-webkit-hyphens: auto;
+	-webkit-hyphenate-limit-chars: auto 3;
+	-webkit-hyphenate-limit-lines: 4;
+	-ms-hyphens: auto;
+	-ms-hyphenate-limit-chars: auto 3;
+	-ms-hyphenate-limit-lines: 4;
+}
+
+.markdown-body h1{
+  font-size: 3em;
+	border-bottom: 2px solid black;
+}
+
+.markdown-body h2{
+	font-size: 2em;
+	border-bottom: 2px solid gray;
+}
+
+.markdown-body h3{
+	font-size: 1.5em;
+	border-bottom: 2px solid #CDCDCD;
+}
+
+.markdown-body h4{
+	font-size: 1.3em;
+	margin-bottom: -.2em;
+}
+
+.markdown-body h5{
+	font-size: 1.1em;
+	margin-bottom: -.5em
+}
+
+.markdown-body h6{
+	font-size: 1em;
+	margin-bottom: -1em;
+}
+
+.markdown-body hr{
+	margin: 1em 0;
+	border: 1px solid #CDCDCD;
+}
+
+.markdown-body p{
+	text-align: justify;
+}
+
+.markdown-body a, .markdown-body a:visited, .markdown-body a:active{
+	color: #3434EE;
+	text-decoration: none;
+}
+
+.markdown-body a:hover{
+	text-decoration: underline;
+}
+
+.markdown-body table{
+	border-collapse: collapse;
+}
+
+.markdown-body thead{
+	background-color: #CDCDCD;
+	font-weight: 600;
+}
+
+.markdown-body td, .markdown-body th{
+	border: solid 1px #454545;
+	padding: 20px;
+}
+
+.markdown-body code{
+	display: block;
+	padding: 1em;
+	margin: 1em 0;
+	background-color: #CDCDCD;
+	font-family: Consolas, Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+	overflow-x: auto;
+}
