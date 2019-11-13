@@ -7,9 +7,8 @@ const attrHandler = require('./lib/attr_handler.js');
 var args = process.argv.slice(2);
 attrHandler.parseArguments(args, config);
 log.info("configuration loaded");
-
-const Server = require('./lib/server.js')(config);
-
+const server = require('./lib/server.js')(config);
+server.listen();
 log.success("Server started. Ready for requests \n");
 
 const cmdHandler = require('./lib/cmd_handler.js');
