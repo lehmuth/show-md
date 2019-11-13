@@ -1,6 +1,6 @@
 # Wiki to show-md
 
-!{/wiki/table_of_contents.md}
+!{../table_of_contents.md}
 
 ## Syntax
 
@@ -12,7 +12,7 @@ To make an unorder list use -, + or * followed by one to three whitespace:
 	+  and this
 	*   and this too.
 
-**Parsed to:**	
+**Parsed to:**
 
 > - This is a list item
 > + and this
@@ -23,7 +23,7 @@ To make an ordered list add the number in front of the line:
 
 	1. This is point 1
 	2. and this point 2
-	
+
 **Parsed to:**
 
 > 1. This is point 1
@@ -46,25 +46,25 @@ To write multiple lines in one list item (no matter which type) put a tab in fro
 	*   first line
 		second line
 		third line
-		
+
 **Parsed to:**
 
 > * first line
 > 	second line
 > 	third line
-	
+
 #### Paragraph list
 If at least one list item in the list is seperated threw a blank line a paragraph list is created:
 
 	+ this is list item one
-	
+
 	+ this is list item two
 	+ and list item three
-	
+
 **Parsed to:**
 
 > + this is list item one
-> 
+>
 > + this is list item two
 > + and list item three
 
@@ -75,7 +75,7 @@ To make a nested list use four whitespaces or a tab for each stage the icon shou
 		+ unordered list item level 2
 		2. ordered list item level 2
 	2. unordered list item level 1
-	
+
 **Parsed to:**
 
 > 1. ordered list item level 1
