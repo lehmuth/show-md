@@ -4,10 +4,10 @@
 const log = require('./lib/log.js');
 log.info("Server starting...");
 log.info("loding configuration...");
-const config = require('./lib/config.js');
+const config = require('./lib/config.js')(__dirname);
 var args = process.argv.slice(2);
 const attrHandler = require('./lib/attr_handler.js')(args, config);
-let app_root = __dirname; 
+let app_root = config.getAppRoot(); 
 log.info("configuration loaded");
 
 const http = require('http');
@@ -28,7 +28,7 @@ server.on('request', (req, res) => {
 	var href = url.parse(req.url, true).path;
 	log.access("REQUEST:  " + href);
 	var path = buildPath(href, app_root, config.getRootPath());
-	
+
 	//TODO: verify href
 	//Check whether file exists and is directory
 	try {
@@ -61,7 +61,7 @@ server.on('request', (req, res) => {
 			res.end(data, 'binary');
 			log.access("RETURNED: " + path);
 		});
-	}	
+	}
 	//Check wheather requested file is a css file
 	else if(path.match(/(.*\.css$|.*\.js$)/i)){
 		fs.readFile(path, 'utf-8', function(err, data) {
@@ -69,7 +69,7 @@ server.on('request', (req, res) => {
 			res.end(data);
 			log.access("RETURNED: " + path);
 		});
-	}	
+	}
 	//Other file extensions are forbidden
 	else if(path.match(/(.*\..*$)/i)){
 		log.access("ERROR 403: " + href);
@@ -93,17 +93,17 @@ function buildPath(href, app_root, root_path){
 	href.replace(/\\/g, '/');
 	//remove double dots for parent directory
 	href.replace(/\/\.\.\//, '');
-	
+
 	href.replace(/^\./, root_path);
-	
+
 	if(href.match(/^\/favicon\.ico$/))
 		href = '/resources/icons/favicon.ico';
 	var path;
 	if(href.match(/^(\/resources\/|\/wiki\/)/))
 		path = app_root + href;
-	else 
+	else
 		path = root_path + href;
-	
+
 	return path;
 }
 }
