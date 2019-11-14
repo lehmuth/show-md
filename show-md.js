@@ -11,6 +11,6 @@ const server = require('./lib/server.js')(config);
 server.listen();
 log.success("Server started. Ready for requests \n");
 
-const cmdHandler = require('./lib/cmd_handler.js');
+const cmdHandler = require('./lib/cmd_handler.js')(config);
 //start input Loop
 cmdHandler.start();

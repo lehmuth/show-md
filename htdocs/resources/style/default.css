@@ -2,48 +2,6 @@
 
 :root{
 	background-color: #EFEFEF;
-}
-
-.markdown-body{
-	width: 100%;
-	max-width: 1000px;
-	margin: auto;
-	background-color: white;
-	padding: 30px;
-	box-sizing: border-box;
-	position:relative;
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-
-}
-.markdown-body:before, .markdown-body:after
-{
-	content:"";
-    position:absolute;
-    z-index:-1;
-    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
-    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
-    box-shadow:0 0 20px rgba(0,0,0,0.8);
-    top:10px;
-    bottom:10px;
-    left:0;
-    right:0;
-    -moz-border-radius:100px / 10px;
-    border-radius:100px / 10px;
-}
-.markdown-body:after
-{
-	right:10px;
-    left:auto;
-    -webkit-transform:skew(8deg) rotate(3deg);
-       -moz-transform:skew(8deg) rotate(3deg);
-        -ms-transform:skew(8deg) rotate(3deg);
-         -o-transform:skew(8deg) rotate(3deg);
-            transform:skew(8deg) rotate(3deg);
-}
-
-.markdown-body *{
 	font-family: 'Muli', sans-serif;
 	hyphens: auto;
 	-webkit-hyphens: auto;
@@ -52,6 +10,15 @@
 	-ms-hyphens: auto;
 	-ms-hyphenate-limit-chars: auto 3;
 	-ms-hyphenate-limit-lines: 4;
+}
+
+.markdown-body{
+	width: 100%;
+	max-width: 1000px;
+	margin: auto;
+	background-color: white;
+	padding: 2em 7em;
+	box-sizing: border-box;
 }
 
 .markdown-body h1{
@@ -71,17 +38,17 @@
 
 .markdown-body h4{
 	font-size: 1.3em;
-	margin-bottom: -.2em;
+	margin-bottom: 0;
 }
 
 .markdown-body h5{
 	font-size: 1.1em;
-	margin-bottom: -.5em
+	margin-bottom: 0;
 }
 
 .markdown-body h6{
 	font-size: 1em;
-	margin-bottom: -1em;
+	margin-bottom: 0;
 }
 
 .markdown-body hr{
@@ -123,4 +90,56 @@
 	background-color: #CDCDCD;
 	font-family: Consolas, Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
 	overflow-x: auto;
+}
+
+.markdown-body blockquote{
+	border-left: 5px solid #CDCDCD;
+	margin-left: .5em;
+	margin-bottom: .5em;
+	padding-left: .5em;
+}
+
+@media(max-width: 800px){
+	.markdown-body{
+		padding: 2em;
+	}
+}
+
+@media(max-width: 500px){
+	:root{
+		font-size: .8em;
+	}
+}
+
+@media(min-width: 1100px){
+	.markdown-body{
+		position:relative;
+			-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+				 -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+							box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	}
+
+	.markdown-body:before, .markdown-body:after{
+		content:"";
+	    position:absolute;
+	    z-index:-1;
+	    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
+	    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
+	    box-shadow:0 0 20px rgba(0,0,0,0.8);
+	    top:10px;
+	    bottom:10px;
+	    left:0;
+	    right:0;
+	    -moz-border-radius:100px / 10px;
+	    border-radius:100px / 10px;
+	}
+	.markdown-body:after{
+		right:10px;
+	  left:auto;
+	    -webkit-transform:skew(8deg) rotate(3deg);
+	       -moz-transform:skew(8deg) rotate(3deg);
+	        -ms-transform:skew(8deg) rotate(3deg);
+	         -o-transform:skew(8deg) rotate(3deg);
+	            transform:skew(8deg) rotate(3deg);
+	}
 }

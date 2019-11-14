@@ -6,4 +6,4 @@
 	- [paragraphs](/wiki/syntax/paragraphs.md)
 	- [headlines](/wiki/syntax/headlines.md)
 	- [lists](/wiki/syntax/lists.md)
-- [todo list for implementing features](/wiki/todo.md)
+- [todo list for implementing features](/todo.md)
