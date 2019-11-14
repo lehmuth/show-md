@@ -50,7 +50,7 @@ To install showdown use the npm command line tool, delivered with nodejs:
 
 Open your command line and navigate to the root directory, where you want to open the show-md server. To execute type:
 
-	node show-md.js
+	node show-md
 
 ## 3. Markdown syntax {syntax}
 
