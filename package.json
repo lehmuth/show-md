@@ -1,0 +1,26 @@
+{
+  "name": "show-md",
+  "version": "0.1.2",
+  "description": "show-md is a small nodejs server application which provides files like a webserver and converts md files into html files using showdown.",
+  "main": "show-md.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lehmuth/show-md.git"
+  },
+  "keywords": [
+    "markdown",
+    "server"
+  ],
+  "author": "Dominik Lehmuth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lehmuth/show-md/issues"
+  },
+  "homepage": "https://github.com/lehmuth/show-md#readme"
+}
