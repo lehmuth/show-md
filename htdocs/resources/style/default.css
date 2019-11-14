@@ -83,10 +83,14 @@
 	padding: 20px;
 }
 
-.markdown-body code{
+.markdown-body>pre>code{
 	display: block;
 	padding: 1em;
 	margin: 1em 0;
+}
+
+.markdown-body code{
+	padding: .5em;
 	background-color: #CDCDCD;
 	font-family: Consolas, Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
 	overflow-x: auto;
