@@ -42,3 +42,6 @@
 - [] show-md up [args] to run show-md in deamon thread
 - [] show-md down [id] to shut down server
 - [] show-md ls to list all active servers
+
+## Other:
+- [] command to parse includes in a specified md file or recursivly for every md file in a specified directory
