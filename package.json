@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/lehmuth/show-md/issues"
   },
-  "homepage": "https://github.com/lehmuth/show-md#readme"
+  "homepage": "https://github.com/lehmuth/show-md#readme",
+  "dependencies": {
+    "showdown": "^1.9.1"
+  }
 }
