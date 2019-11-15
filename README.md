@@ -15,7 +15,7 @@ ready to show in browser.
 
 There are diffrent approaches to install show-md on your local system.
 
-### 1.1. Installation with npm {install_npm}
+### 1.1. Installation with npm (recommended){install_npm}
 
 **Required:**
 
@@ -24,7 +24,7 @@ There are diffrent approaches to install show-md on your local system.
 
 To get the application with `npm` use:
 
-	npm install show-md
+	npm install show-md -g
 
 ### 1.2. Install manually {install_source}
 
@@ -32,25 +32,26 @@ To get the application with `npm` use:
 
 - [Node.js](https://github.com/nodejs/node)
 - [npm](https://github.com/npm/cli)
-- [showdownjs/showdown](https://github.com/showdownjs/showdown)
 
 To build the application from source code you have to clone the repository with the command:
 
 	git clone https://github.org/lehmuth/show-md
 
-Afterwards you have to add the path to the directory to your path environment variable, using the command:
+To install show-md use the npm command line tool, delivered with nodejs:
 
-	setx path "%path%;C:/path/to/show-md/root/"
-
-To install showdown use the npm command line tool, delivered with nodejs:
-
-	npm install showdown
+	npm install show-md
 
 ## 2. Usage {usage}
 
 Open your command line and navigate to the root directory, where you want to open the show-md server. To execute type:
 
-	node show-md
+	show-md [-d|--dir <path>]
+	        [-p|--port <port>]
+					[-s|--style <path/to/style.css|default|github|none>]
+					[-l|--lang <html-lang-id>]
+
+- **-d** sets another root directory. Default is the current working directory.
+- **-p** changes the servers port. It is accessable by a browser with address: **http://localhost:[PORT]/**
 
 ## 3. Markdown syntax {syntax}
 
