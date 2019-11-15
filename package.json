@@ -1,10 +1,10 @@
 {
   "name": "show-md",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "show-md is a small nodejs server application which provides files on a HTTP server and converts md files into html files using showdown.",
   "main": "show-md.js",
   "bin": {
-    "show-md-cmd": "bin/show-md.js"
+    "show-md": "bin/show-md.js"
   },
   "directories": {
     "lib": "lib"
