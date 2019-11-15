@@ -1,7 +1,6 @@
 # show-md - short user guide
 
-show-md is a node.js application which converts .md-files (markdown) to html files and hosts them on a specified port,
-ready to show in browser.
+show-md is a node.js application which converts Markdown files to html files and hosts them on a HTTP server, ready to show in browser. To convert markdown to html [showdown](https://github.com/showdownjs/showdown/) by [showdownjs](http://showdownjs.com/) is used, with additional extensions.
 
 **Table of contents:**
 
@@ -47,11 +46,16 @@ Open your command line and navigate to the root directory, where you want to ope
 
 	show-md [-d|--dir <path>]
 	        [-p|--port <port>]
-					[-s|--style <path/to/style.css|default|github|none>]
-					[-l|--lang <html-lang-id>]
+            [-s|--style <path/to/style.css|default|github|none>]
+			[-l|--lang <html-lang-id>]
 
-- **-d** sets another root directory. Default is the current working directory.
-- **-p** changes the servers port. It is accessable by a browser with address: **http://localhost:[PORT]/**
+- **-d**: sets another root directory. Default is the current working directory.
+- **-p**: changes the servers port. It is accessable by a browser with address: **http://localhost:[PORT]/**
+- **-s**: set the theme by referencing a css file, or one of the available defaults:
+	- __github__: Github markdown style by [Sindre Sorhus](https://sindresorhus.com/) [(github)](https://github.com/sindresorhus/github-markdown-css)
+	- __default__: Default show-md design
+	- __none__: No stylesheet, just pure HTML
+- **-l**: set the language of your content. This is needed to justify paragraphs.
 
 ## 3. Markdown syntax {syntax}
 
