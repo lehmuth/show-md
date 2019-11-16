@@ -1,12 +1,6 @@
-module.exports = function(appRoot){
+module.exports = function(){
 	const path = require('path');
 	var config = {
-		setAppRoot: function(appRoot){
-			this.appRoot = path.resolve(appRoot);
-		},
-		getAppRoot: function(){
-			return this.appRoot;
-		},
 		setHtDocs: function(htDocs){
 			this.htDocs = path.resolve(htDocs);
 		},

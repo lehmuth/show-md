@@ -4,7 +4,7 @@ module.exports = {
     const log = require('./src/log.js');
     log.success("Server starting...");
     log.success("loading configuration...");
-    const config = require('./src/config.js')(__dirname);
+    const config = require('./src/config.js');
     const attrHandler = require('./src/attr_handler.js');
     attrHandler.parseArguments(args, config);
     log.info("configuration loaded");
