@@ -1,11 +1,16 @@
 module.exports = function(config){
-  let app_root = config.getAppRoot() + '/htdocs';
   const http = require('http');
   const fs = require('fs');
   const url = require('url');
   const path = require('path');
-  const log = require('./log.js');
   const Parser = require('./parser.js');
+
+  fs.openSync(config.getHttpLogPath(), 'a');
+  const log = require('simple-node-logger').createSimpleFileLogger('logs/http.log'),
+                      opts = {
+                        timestampFormat:'[YYYY-MM-DD HH:mm:ss]'
+                      };
+
 
   /** Initial setup */
   //get argument array
@@ -17,7 +22,7 @@ module.exports = function(config){
   server.on('request', (req, res) => {
     //get path to file
   	var href = url.parse(req.url, true).path;
-  	log.access("REQUEST:  " + href);
+  	log.info("REQUEST:  " + href);
 
     var filename = path.join(config.getRootPath(), href);
     if(filename.indexOf(config.getRootPath()) !== 0) {
@@ -37,8 +42,8 @@ module.exports = function(config){
       //Check htdocs directory
     	if(href.match(/^\/favicon\.ico$/))
     		href = '/resources/icons/favicon.ico';
-      filename = path.join(config.getHtDocs(), href);
-      if(filename.indexOf(config.getHtDocs()) !== 0) {
+      filename = path.join(config.getHtdocs(), href);
+      if(filename.indexOf(config.getHtdocs()) !== 0) {
         return sendError(403);
       }
       try {
@@ -62,7 +67,7 @@ module.exports = function(config){
   			res.writeHead(200, {'Content-Type': 'text/html'});
         parser.setFilePath(filename);
   			res.end(parser.mdToHtml(data));
-  			log.access("RETURNED: " + filename);
+  			log.info("RETURNED: " + filename);
   		});
   	}
   	//Check whether requested file is an image or js file
@@ -70,7 +75,7 @@ module.exports = function(config){
   		fs.readFile(filename, function(err, data) {
   			res.writeHead(200, {'Content-Type': 'text/html'});
   			res.end(data, 'binary');
-  			log.access("RETURNED: " + filename);
+  			log.info("RETURNED: " + filename);
   		});
   	}
   	//Check wheather requested file is a css file
@@ -78,7 +83,7 @@ module.exports = function(config){
   		fs.readFile(filename, 'utf-8', function(err, data) {
   			res.writeHead(200, {'Content-Type': 'text/css'});
   			res.end(data);
-  			log.access("RETURNED: " + filename);
+  			log.info("RETURNED: " + filename);
   		});
   	}
   	//Other file extensions are forbidden
@@ -86,28 +91,23 @@ module.exports = function(config){
   		return sendError(403);
   	}
     function sendError(errorCode){
-      errorpath = path.join(config.getHtDocs(), "error/error" + errorCode + ".md");
+      errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
       fs.readFile(errorpath, 'utf-8', function(err, data) {
         res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
   			res.end(parser.mdToHtml(data));
-        log.access("ERROR " + errorCode + ": " + filename);
+        log.info("ERROR " + errorCode + ": " + filename);
   		});
     }
   });
   server.on('clientError', (err, socket) => {
-  	log.info(err);
   	socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
   });
   return {
-    port: config.getPort(),
     listen: function(){
-      server.listen(this.port);
+      server.listen(config.getPort());
     },
-    getPort: function(){
-      return this.port;
-    },
-    setPort: function(port){
-      this.port = port;
+    stop: function(){
+      server.close();
     }
   }
 }

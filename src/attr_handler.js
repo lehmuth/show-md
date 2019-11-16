@@ -60,6 +60,7 @@ module.exports.parseArguments = function(args, config){
 	}
 
 	log.info("Current root directory: " + config.getRootPath());
+	log.info("htdocs directory: " + config.getHtdocs());
 	log.info("Current language: " + config.getLanguage());
 	log.info("Current stylesheet: " + config.getStylesheet());
 	log.info("Current Port: " + config.getPort());
