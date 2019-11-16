@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/show-md.js",
+    "start": "node bin/show-md.js"
   },
   "repository": {
     "type": "git",
