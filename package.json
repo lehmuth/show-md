@@ -7,7 +7,7 @@
     "show-md": "bin/show-md.js"
   },
   "directories": {
-    "bin": "./bin"
+    "bin": "./bin",
     "logs": "./logs"
   },
   "scripts": {
