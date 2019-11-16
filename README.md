@@ -14,7 +14,7 @@ show-md is a node.js application which converts Markdown files to html files and
 
 There are diffrent approaches to install show-md on your local system.
 
-### 1.1. Installation with npm (recommended){install_npm}
+### 1.1. Install stable version with npm (recommended){install_npm}
 
 **Required:**
 

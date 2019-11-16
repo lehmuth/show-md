@@ -7,7 +7,7 @@
     "show-md": "bin/show-md.js"
   },
   "directories": {
-    "lib": "lib"
+    "bin:": "./bin"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/lehmuth/show-md/issues"
   },
-  "homepage": "https://github.com/lehmuth/show-md#readme",
+  "homepage": "https://github.com/lehmuth/show-md/README.md",
   "dependencies": {
     "showdown": "^1.9.1"
   }
