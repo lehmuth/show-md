@@ -55,7 +55,7 @@ module.exports = function(appRoot){
 					break;
 			}
 			return "/resources/style/default.css";
-		}
+		},
 		setPort: function(port){
 			this.port = port;
 		},
