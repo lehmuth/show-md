@@ -31,6 +31,31 @@ module.exports = function(appRoot){
 		getStylesheet: function(){
 			return this.stylesheet;
 		},
+		getStylesheetPath: function(){
+			switch(this.getStylesheet()){
+				case "none":
+					return "/resources/style/none.css";
+				case "default":
+					return "/resources/style/default.css";
+				case "github":
+					return "/resources/style/github.css";
+				case /\.(css|CSS)$/:
+					var filename = path.resolve(this.getRootPath() + this.getStylesheet());
+					try {
+						//Check whether stylesheet is a file
+						var stat = fs.statSync(filename);
+						if(stat.isFile())
+							return path.relative(this.getRootPath(), filename);
+					} catch (e) {
+						log.warning("The given stylesheet does not exist.");
+					}
+					break;
+				default:
+					log.warning("The given file is not a stylesheet.");
+					break;
+			}
+			return "/resources/style/default.css";
+		}
 		setPort: function(port){
 			this.port = port;
 		},
@@ -42,7 +67,7 @@ module.exports = function(appRoot){
 	config.setHtDocs(config.getAppRoot() + '/htdocs');
 	config.setRootPath(process.cwd());
 	config.setLanguage("en");
-	config.setStylesheet("/resources/style/default.css");
+	config.setStylesheet("default");
 	config.setPort(56657);
 	return config;
 }

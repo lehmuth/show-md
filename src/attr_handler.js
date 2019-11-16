@@ -38,25 +38,9 @@ module.exports.parseArguments = function(args, config){
 			case "-S":
 			case "--STYLE":
 			case "--style":
+				//This argument needs a value, its located in the next array element.
 				if(++i < args.length && !args[i].match(/^-.*/)){
-					switch(args[i]){
-						case "none":
-							config.setStylesheet("/resources/style/none.css");
-							break;
-						case "github":
-							config.setStylesheet("/resources/style/github.css");
-							break;
-						case /\.css$/:
-							try {
-								//Check whether stylesheet is a file
-								var stat = fs.statSync(args[i]);
-								if(stat.isFile())
-									config.setStylesheet(args[i].replace(/\//g, '\\'));
-							} catch (e) {
-								log.error("The given path is not a stylesheet.\n");
-							}
-							break;
-					}
+					config.setStylesheet(args[i]);
 				}else{
 					log.error("You have to specify a path after " + args[--i] + "!");
 				}
