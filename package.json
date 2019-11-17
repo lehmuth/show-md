@@ -13,8 +13,8 @@
   "scripts": {
     "test": "echo Error: no test specified && exit 0",
     "start": "node bin/show-md.js",
-    "preversion": "npm test && (echo init > logs/http.log) && (echo init > logs/system.log)",
-    "version": "",
+    "preversion": "npm test",
+    "prepublish": "(echo init > logs/http.log) && (echo init > logs/system.log)",
     "postversion": "git push && git push --tags"
   },
   "repository": {
