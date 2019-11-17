@@ -1,5 +1,4 @@
 module.exports = function(showmd){
-	const log = require('./log.js');
 	const readline = require('readline');
 	const fs = require('fs');
 
@@ -26,7 +25,7 @@ module.exports = function(showmd){
 						showmd.log.info('EXIT to stop the server and shut down show-md.\n');
 						break;
 					default:
-						schowmd.log.warning("Unknown command! Enter help for more detailed information.\n");
+						showmd.log.error("Unknown command \"" + argv[0] + "\"! Enter help for more detailed information.\n");
 				}
 			});
 		}

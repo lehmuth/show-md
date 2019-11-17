@@ -8,8 +8,8 @@ const defaults = {
 	stylesheetName: "default",
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
-	httpLogPath: "logs/http.log",
-	logPath: "logs/system.log"
+	httpLogPath: "./logs/http.log",
+	logPath: "./logs/system.log"
 };
 
 class Config extends EventEmitter{

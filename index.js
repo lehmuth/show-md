@@ -15,10 +15,6 @@ module.exports = function(){
         server.stop();
       else
         throw new Error('Server not running!');
-    },
-    initCommandHandler: function(){
-      const cmdHandler = require('./src/cmd_handler.js')(this);
-      cmdHandler.start();
     }
   }
 }

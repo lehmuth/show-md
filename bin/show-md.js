@@ -20,4 +20,6 @@ showmd.log.debug("Current stylesheet: " + showmd.config.getStylesheet());
 showmd.log.debug("Current Port: " + showmd.config.getPort());
 showmd.log.info("Server ready on http://localhost:" + showmd.config.getPort());
 
-showmd.initCommandHandler();
+
+const cmdHandler = require('../src/cmd_handler.js')(showmd);
+cmdHandler.start();
