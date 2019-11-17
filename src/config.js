@@ -8,8 +8,7 @@ const defaults = {
 	stylesheetName: "default",
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
-	httpLogPath: path.join(__dirname, "../logs/http.log"),
-	logPath: path.join(__dirname, "../logs/system.log")
+	httpLogPath: path.join(__dirname, "../logs/http.log")
 };
 
 class Config extends EventEmitter{
@@ -17,25 +16,25 @@ class Config extends EventEmitter{
 		this.htdocs = path.resolve(htdocs);
 	}
 	getHtdocs(){
-		return this.htdocs || defaults.htdocs;
+		return (this.htdocs === undefined) ? defaults.htdocs : this.htdocs;
 	}
 	setRootPath(rootPath){
 		this.rootPath = path.resolve(rootPath);
 	}
 	getRootPath(){
-		return this.rootPath || defaults.rootPath;
+		return (this.rootPath === undefined) ? defaults.rootPath : this.rootPath;
 	}
 	setLanguage(language){
 		this.language = language;
 	}
 	getLanguage(){
-		return this.language || defaults.language;
+		return (this.language === undefined) ? defaults.language : this.language;
 	}
 	setStylesheet(stylesheet){
 		this.stylesheet = stylesheet;
 	}
 	getStylesheet(){
-		return this.stylesheet || defaults.stylesheetName;
+		return (this.stylesheet === undefined) ? defaults.stylesheetName : this.stylesheet;
 	}
 	getStylesheetPath(){
 		switch(this.getStylesheet()){
@@ -66,19 +65,13 @@ class Config extends EventEmitter{
 		this.port = port;
 	}
 	getPort(){
-		return this.port || defaults.port;
+		return (this.port === undefined) ? defaults.port : this.port;
 	}
 	setHttpLogPath(httpLogPath){
 		this.httpLogPath = path.resolve(httpLogPath);
 	}
 	getHttpLogPath(){
-		return this.httpLogPath || defaults.httpLogPath;
-	}
-	setLogPath(logPath){
-		this.logPath = path.resolve(logPath);
-	}
-	getLogPath(){
-		return this.logPath || defaults.logPath;
+		return (this.httpLogPath === undefined) ? defaults.httpLogPath : this.httpLogPath;
 	}
 };
 
