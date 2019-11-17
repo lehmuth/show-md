@@ -5,7 +5,7 @@ module.exports = function(config){
   const path = require('path');
   const Parser = require('./parser.js');
 
-  const log = require('simple-node-logger').createSimpleFileLogger('logs/http.log'),
+  const log = require('simple-node-logger').createSimpleFileLogger(config.getHttpLogPath()),
                       opts = {
                         timestampFormat:'[YYYY-MM-DD HH:mm:ss]'
                       };
