@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const ShowmdServer = require('../index.js');
 const showmd = new ShowmdServer();
-showmd.  log.setLevel("all");
+//showmd.  log.setLevel("all");
 showmd.config.on('warning', function(msg){
   showmd.log.warn(msg);
 });
