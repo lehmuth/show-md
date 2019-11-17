@@ -6,7 +6,7 @@ const EventEmitter = require('events');
 class ShowMdServer extends EventEmitter{
 
   /**
-   * Init new ShowMdServer
+   * Init new ShowMdServer.
    */
   constructor(){
     super();
@@ -15,6 +15,9 @@ class ShowMdServer extends EventEmitter{
     this.server = require('./src/server.js')(this.config);
   }
 
+  /**
+   * Server starts listening, event "started" is emitted.
+   */
   start(){
     try{
       this.server.listen();
@@ -24,6 +27,9 @@ class ShowMdServer extends EventEmitter{
     }
   }
 
+  /**
+   * Server stops listening, event "stoped" is emitted.
+   */
   stop(){
     if(server != undefined && server.listening){
       this.server.stop();
