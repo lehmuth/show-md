@@ -1,5 +1,4 @@
 const path = require('path');
-const log = require('./log.js');
 const EventEmitter = require('events');
 
 const defaults = {
@@ -9,7 +8,8 @@ const defaults = {
 	stylesheetName: "default",
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
-	httpLogPath: "logs/http.log"
+	httpLogPath: "logs/http.log",
+	logPath: "logs/system.log"
 };
 
 class Config extends EventEmitter{
@@ -73,6 +73,12 @@ class Config extends EventEmitter{
 	}
 	getHttpLogPath(){
 		return this.httpLogPath || defaults.httpLogPath;
+	}
+	setLogPath(logPath){
+		this.logPath = path.resolve(logPath);
+	}
+	getLogPath(){
+		return this.logPath || defaults.logPath;
 	}
 };
 

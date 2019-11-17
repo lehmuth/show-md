@@ -1,4 +1,4 @@
-module.exports = function(config){
+module.exports = function(showmd){
 	const log = require('./log.js');
 	const readline = require('readline');
 	const fs = require('fs');
@@ -17,18 +17,18 @@ module.exports = function(config){
 						break;
 					case "root":
 					case "ROOT":
-						log.success(config.getRootPath());
+						showmd.log.info(showmd.config.getRootPath());
 					case 'exit':
 					case 'EXIT':
 						process.exit();
 					case 'help':
 					case 'HELP':
-						log.info('EXIT to stop the server and shut down show-md.\n');
+						showmd.log.info('EXIT to stop the server and shut down show-md.\n');
 						break;
 					default:
-						log.warning("Unknown command! Enter help for more detailed information.\n");
+						schowmd.log.warning("Unknown command! Enter help for more detailed information.\n");
 				}
-			})
+			});
 		}
 	}
 }

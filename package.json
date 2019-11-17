@@ -15,7 +15,8 @@
     "start": "node bin/show-md.js",
     "preversion": "npm test",
     "version": "",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "postinstall": "echo init > logs/http.log && echo init > logs/system.log"
   },
   "repository": {
     "type": "git",

@@ -5,7 +5,6 @@ module.exports = function(config){
   const path = require('path');
   const Parser = require('./parser.js');
 
-  fs.openSync(config.getHttpLogPath(), 'a');
   const log = require('simple-node-logger').createSimpleFileLogger('logs/http.log'),
                       opts = {
                         timestampFormat:'[YYYY-MM-DD HH:mm:ss]'
@@ -57,7 +56,7 @@ module.exports = function(config){
   	    }
       } catch (e) {
   	    //Exception in case of the file does not exist
-        sendError(404);
+        return sendError(404);
       }
     }
   	/** Check file extension for allowed file types */
