@@ -102,11 +102,14 @@ module.exports = function(config){
   	socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
   });
   return {
+    listening: false,
     listen: function(){
       server.listen(config.getPort());
+      this.listening = true;
     },
     stop: function(){
       server.close();
+      this.listening = false;
     }
   }
 }
