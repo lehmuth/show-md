@@ -1,20 +1,42 @@
-//get app root dir
-module.exports = function(){
-  var server;
-  var config = require('./src/config.js');
-  var log = require('simple-node-logger').createSimpleLogger(config.getLogPath());
-  return {
-    config: config,
-    start: function(){
-      server = require('./src/server.js')(config);
-      server.listen();
-    },
-    log: log,
-    stop: function(){
-      if(server != undefined && server.listening)
-        server.stop();
-      else
-        throw new Error('Server not running!');
+const EventEmitter = require('events');
+
+/**
+ * A server class which consists of a HTTP server and a configuration.
+ */
+class ShowMdServer extends EventEmitter{
+
+  /**
+   * Init new ShowMdServer
+   */
+  constructor(){
+    super();
+    this.config  = require('./src/config.js');;
+    this.config.on('warning', (msg) => {this.emit('warning', msg);});
+    this.server = require('./src/server.js')(this.config);
+  }
+
+  start(){
+    try{
+      this.server.listen();
+      this.emit("started");
+    }catch(err){
+      this.emit('error', err);
     }
   }
+
+  stop(){
+    if(server != undefined && server.listening){
+      this.server.stop();
+      this.emit("stoped");
+    }else{
+      this.emit('error', 'Trying to shut down server, but server not running!');
+    }
+  }
+
+  isListening(){
+    return this.server.listening;
+  }
+
 }
+
+module.exports = ShowMdServer;
