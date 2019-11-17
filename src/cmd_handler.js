@@ -17,9 +17,20 @@ module.exports = function(showmd){
 					case "root":
 					case "ROOT":
 						showmd.log.info(showmd.config.getRootPath());
+						break;
+					case 'stop':
+					case 'STOP':
+						showmd.stop();
+						break;
 					case 'exit':
 					case 'EXIT':
-						process.exit();
+						if(showmd.isListening()){
+							showmd.stop();
+							showmd.on('stoped', () => {process.exit();});
+						}else{
+							process.exit();
+						}
+						break;
 					case 'help':
 					case 'HELP':
 						showmd.log.info('EXIT to stop the server and shut down show-md.\n');
