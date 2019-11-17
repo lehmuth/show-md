@@ -8,7 +8,7 @@ const defaults = {
 	stylesheetName: "default",
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
-	httpLogPath: "./logs/http.log",
+	httpLogPath: path.resolve("logs/http.log"),
 	logPath: "./logs/system.log"
 };
 
