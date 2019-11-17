@@ -9,7 +9,7 @@ const defaults = {
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
 	httpLogPath: path.resolve("logs/http.log"),
-	logPath: "./logs/system.log"
+	logPath: path.resolve("logs/system.log")
 };
 
 class Config extends EventEmitter{
