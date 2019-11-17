@@ -2,14 +2,14 @@ const path = require('path');
 const EventEmitter = require('events');
 
 const defaults = {
-	htdocs: path.resolve('htdocs'),
+	htdocs: path.join(__dirname, '../htdocs'),
 	rootPath: process.cwd(),
 	language: "en",
 	stylesheetName: "default",
 	stylesheetPath: "/resources/style/default.css",
 	port: 56657,
-	httpLogPath: path.resolve("logs/http.log"),
-	logPath: path.resolve("logs/system.log")
+	httpLogPath: path.join(__dirname, "../logs/http.log"),
+	logPath: path.join(__dirname, "../logs/system.log")
 };
 
 class Config extends EventEmitter{

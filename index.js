@@ -11,7 +11,7 @@ module.exports = function(){
     },
     log: log,
     stop: function(){
-      if(server != undefined)
+      if(server != undefined && server.listening)
         server.stop();
       else
         throw new Error('Server not running!');
