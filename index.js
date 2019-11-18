@@ -1,18 +1,19 @@
 const EventEmitter = require('events');
+const ShowMdServer = require('./src/server.js');
 
 /**
  * A server class which consists of a HTTP server and a configuration.
  */
-class ShowMdServer extends EventEmitter{
+class ShowMd extends EventEmitter{
 
   /**
    * Init new ShowMdServer.
    */
   constructor(){
     super();
-    this.config  = require('./src/config.js');;
+    this.config  = require('./src/config.js');
     this.config.on('warning', (msg) => {this.emit('warning', msg);});
-    this.server = require('./src/server.js')(this.config);
+    this.server = new ShowMdServer(this.config);
   }
 
   /**
@@ -31,18 +32,21 @@ class ShowMdServer extends EventEmitter{
    * Server stops listening, event "stoped" is emitted.
    */
   stop(){
-    if(server != undefined && server.listening){
-      this.server.stop();
+    if(this.server != undefined && this.server.isListening()){
+      this.server.close();
       this.emit("stoped");
     }else{
       this.emit('error', 'Trying to shut down server, but server not running!');
     }
   }
 
-  isListening(){
-    return this.server.listening;
+  isRunning(){
+    return this.server.isListening();
   }
+
+
 
 }
 
-module.exports = ShowMdServer;
+module.exports = new ShowMd();
+module.exports.ShowMdServer = ShowMdServer;
