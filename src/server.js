@@ -18,7 +18,7 @@ class ShowMdServer extends EventEmitter{
     httpServer = http.createServer();
     httpServer.on('request', handleRequest);
     httpServer.on('clientError', (err, socket) => {
-    	socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+    	socket.end('HTTP/1.1 400 Bad Request');
     });
   }
   listen(){
@@ -100,13 +100,14 @@ function handleRequest(req, res){
   else if(filename.match(/(.*\..*$)/i)){
     return sendError(403);
   }
-  function sendError(errorCode){
-    errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
-    var data = fs.readFileSync(errorpath, 'utf-8')
-    res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
-    res.end(parser.mdToHtml(data));
-    log.info("ERROR " + errorCode + ": " + filename);
-  }
+}
+
+function sendError(res, errorCode){
+  var errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
+  var data = fs.readFileSync(errorpath, 'utf-8')
+  res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
+  res.end(parser.mdToHtml(data));
+  log.info("ERROR " + errorCode + ": " + filename);
 }
 
 module.exports = ShowMdServer;
