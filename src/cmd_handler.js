@@ -24,9 +24,9 @@ module.exports = function(showmd){
 						break;
 					case 'exit':
 					case 'EXIT':
-						if(showmd.isListening()){
+						if(showmd.isRunning()){
+							showmd.once('stoped', () => {process.exit(0);});
 							showmd.stop();
-							showmd.on('stoped', () => {process.exit();});
 						}else{
 							process.exit();
 						}
