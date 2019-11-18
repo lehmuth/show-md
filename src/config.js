@@ -11,27 +11,34 @@ const defaults = {
 	httpLogPath: path.join(__dirname, "../logs/http.log")
 };
 
-class Config extends EventEmitter{
+class ShowMdConfig extends EventEmitter{
+	constructor(){
+		super();
+	}
 	setHtdocs(htdocs){
 		this.htdocs = path.resolve(htdocs);
+		return this;
 	}
 	getHtdocs(){
 		return (this.htdocs === undefined) ? defaults.htdocs : this.htdocs;
 	}
 	setRootPath(rootPath){
 		this.rootPath = path.resolve(rootPath);
+		return this;
 	}
 	getRootPath(){
 		return (this.rootPath === undefined) ? defaults.rootPath : this.rootPath;
 	}
 	setLanguage(language){
 		this.language = language;
+		return this;
 	}
 	getLanguage(){
 		return (this.language === undefined) ? defaults.language : this.language;
 	}
 	setStylesheet(stylesheet){
 		this.stylesheet = stylesheet;
+		return this;
 	}
 	getStylesheet(){
 		return (this.stylesheet === undefined) ? defaults.stylesheetName : this.stylesheet;
@@ -63,16 +70,18 @@ class Config extends EventEmitter{
 	}
 	setPort(port){
 		this.port = port;
+		return this;
 	}
 	getPort(){
-		return (this.port === undefined) ? defaults.port : this.port;
+		return (this.port === undefined || !this.port.match(/[0-9]*/)) ? defaults.port : this.port;
 	}
 	setHttpLogPath(httpLogPath){
 		this.httpLogPath = path.resolve(httpLogPath);
+		return this;
 	}
 	getHttpLogPath(){
 		return (this.httpLogPath === undefined) ? defaults.httpLogPath : this.httpLogPath;
 	}
 };
 
-module.exports = new Config();
+module.exports = ShowMdConfig;

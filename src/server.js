@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
-const Parser = require('./parser.js');
+const ShowMdConfig = require('./config.js');
+const ShowMdParser = require('./md_parser.js');
 const LogFactory = require('simple-node-logger');
 const http = require('http');
 const fs = require('fs');
@@ -10,11 +11,11 @@ var config, parser, httpServer, log, opts = {
 };;
 
 class ShowMdServer extends EventEmitter{
-  constructor(_config){
+  constructor(_config, _parser){
     super();
-    config = (_config === undefined) ? require('./config.js') : _config;
+    config = (_config === undefined || !(_config instanceof ShowMdConfig)) ? new ShowMdConfig() : _config;
     log = (log === undefined) ? LogFactory.createSimpleFileLogger(config.getHttpLogPath()) : log;
-    parser = new Parser(config);
+    parser = (_parser === undefined) ? new ShowMdParser(config) : _parser;
     httpServer = http.createServer();
     httpServer.on('request', handleRequest);
     httpServer.on('clientError', (err, socket) => {
@@ -39,7 +40,7 @@ function handleRequest(req, res){
 
   var filename = path.join(config.getRootPath(), href);
   if(filename.indexOf(config.getRootPath()) !== 0) {
-    return sendError(403);
+    return sendError(res, 403);
   }
   try {
     var stat = fs.statSync(filename);
@@ -57,7 +58,7 @@ function handleRequest(req, res){
       href = '/resources/icons/favicon.ico';
     filename = path.join(config.getHtdocs(), href);
     if(filename.indexOf(config.getHtdocs()) !== 0) {
-      return sendError(403);
+      return sendError(res, 403);
     }
     try {
       var stat = fs.statSync(filename);
@@ -70,7 +71,7 @@ function handleRequest(req, res){
       }
     } catch (e) {
       //Exception in case of the file does not exist
-      return sendError(404);
+      return sendError(res, 404);
     }
   }
   /** Check file extension for allowed file types */
@@ -98,16 +99,16 @@ function handleRequest(req, res){
   }
   //Other file extensions are forbidden
   else if(filename.match(/(.*\..*$)/i)){
-    return sendError(403);
+    return sendError(res, 403);
   }
-}
 
-function sendError(res, errorCode){
-  var errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
-  var data = fs.readFileSync(errorpath, 'utf-8')
-  res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
-  res.end(parser.mdToHtml(data));
-  log.info("ERROR " + errorCode + ": " + filename);
+  function sendError(res, errorCode){
+    var errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
+    var data = fs.readFileSync(errorpath, 'utf-8')
+    res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
+    res.end(parser.mdToHtml(data));
+    log.info("ERROR " + errorCode + ": " + filename);
+  }
 }
 
 module.exports = ShowMdServer;

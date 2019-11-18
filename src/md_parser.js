@@ -1,9 +1,12 @@
+const EventEmitter = require('events');
+const ShowMdConfig = require('./config.js');
 const showdown  = require('showdown');
 const fs = require('fs');
 
-class Parser{
+class ShowMdParser extends EventEmitter{
 	constructor(config){
-		this.config = config;
+		super();
+		this.config = (config === undefined) ? new ShowMdConfig() : config;
 		//Initialize and configure showdown converter
 		const include = require('./extensions/include.js')(config);
 		showdown.extension('include', include);
@@ -51,4 +54,4 @@ class Parser{
 	}
 }
 
-module.exports = Parser;
+module.exports = ShowMdParser;
