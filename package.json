@@ -35,5 +35,8 @@
     "minimist": "^1.2.0",
     "showdown": "^1.9.1",
     "simple-node-logger": "^18.12.23"
+  },
+  "devDependencies": {
+    "standard": "^14.3.1"
   }
 }
