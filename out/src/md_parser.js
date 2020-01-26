@@ -17,18 +17,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
-var config_js_1 = require("./config.js");
+var config_1 = require("./config");
 var showdown_1 = require("showdown");
-var include_js_1 = __importDefault(require("./extensions/include.js"));
+var include_1 = __importDefault(require("./extensions/include"));
 var path_1 = __importDefault(require("path"));
 var ShowMdParser = /** @class */ (function (_super) {
     __extends(ShowMdParser, _super);
     function ShowMdParser(config) {
         var _this = _super.call(this) || this;
-        _this.config = (config !== null && config !== void 0 ? config : new config_js_1.ShowMdConfig());
+        _this.config = (config !== null && config !== void 0 ? config : new config_1.ShowMdConfig());
         // Initialize and configure showdown converter
-        showdown_1.extension('include', include_js_1.default);
-        _this.converter = new showdown_1.Converter({ extensions: [include_js_1.default] });
+        showdown_1.extension('include', include_1.default);
+        _this.converter = new showdown_1.Converter({ extensions: [include_1.default] });
         _this.converter.setOption('tables', true); // enable tables
         _this.converter.setOption('customizedHeaderId', true); // makes it possible to select a custom header id with {custom_id}
         _this.converter.setOption('ghCompatibleHeaderId', true); // generates header ids compatible with github style (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)

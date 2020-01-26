@@ -15,8 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
 var config_1 = require("./config");
-var server_js_1 = require("./server.js");
-var md_parser_js_1 = require("./md_parser.js");
+var server_1 = require("./server");
+var md_parser_1 = require("./md_parser");
 /**
  * A server class which consists of a HTTP server and a configuration.
  */
@@ -33,8 +33,8 @@ var ShowMdApp = /** @class */ (function (_super) {
         else
             _this.config = new config_1.ShowMdConfig();
         _this.config.on('warning', function (msg) { _this.emit('warning', msg); });
-        _this.parser = new md_parser_js_1.ShowMdParser(_this.config);
-        _this.server = new server_js_1.ShowMdServer(_this.config, _this.parser);
+        _this.parser = new md_parser_1.ShowMdParser(_this.config);
+        _this.server = new server_1.ShowMdServer(_this.config, _this.parser);
         return _this;
     }
     /**

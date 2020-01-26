@@ -2,8 +2,8 @@
 
 import { EventEmitter } from 'events';
 import { ShowMdConfig } from './config';
-import  {ShowMdServer } from './server.js';
-import { ShowMdParser } from './md_parser.js';
+import  {ShowMdServer } from './server';
+import { ShowMdParser } from './md_parser';
 
 /**
  * A server class which consists of a HTTP server and a configuration.

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ShowMdApp }  from './app.js';
+import { ShowMdApp }  from './app';
 import parseArgs, { ParsedArgs } from 'minimist';
 
 export enum ShowMdCommand{

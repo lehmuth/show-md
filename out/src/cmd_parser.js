@@ -17,7 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
-var app_js_1 = require("./app.js");
+var app_1 = require("./app");
 var minimist_1 = __importDefault(require("minimist"));
 var ShowMdCommand;
 (function (ShowMdCommand) {
@@ -35,7 +35,7 @@ var ShowMdCmdParser = /** @class */ (function (_super) {
         if (app)
             _this.app = app;
         else
-            _this.app = new app_js_1.ShowMdApp();
+            _this.app = new app_1.ShowMdApp();
         return _this;
     }
     ShowMdCmdParser.prototype.parse = function (argv) {

@@ -17,8 +17,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
-var config_js_1 = require("./config.js");
-var md_parser_js_1 = require("./md_parser.js");
+var config_1 = require("./config");
+var md_parser_1 = require("./md_parser");
 var LogFactory = require('simple-node-logger');
 var http_1 = __importDefault(require("http"));
 var fs_1 = __importDefault(require("fs"));
@@ -32,9 +32,9 @@ var ShowMdServer = /** @class */ (function (_super) {
     __extends(ShowMdServer, _super);
     function ShowMdServer(_config, _parser) {
         var _this = _super.call(this) || this;
-        config = (_config !== null && _config !== void 0 ? _config : new config_js_1.ShowMdConfig());
+        config = (_config !== null && _config !== void 0 ? _config : new config_1.ShowMdConfig());
         log = (log === undefined) ? LogFactory.createSimpleFileLogger(config.getHttpLogPath()) : log;
-        parser = (_parser !== null && _parser !== void 0 ? _parser : new md_parser_js_1.ShowMdParser(config));
+        parser = (_parser !== null && _parser !== void 0 ? _parser : new md_parser_1.ShowMdParser(config));
         httpServer = http_1.default.createServer();
         httpServer.on('request', handleRequest);
         httpServer.on('clientError', function (err, socket) {

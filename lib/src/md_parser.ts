@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from './config.js';
+import { ShowMdConfig } from './config';
 import { Converter, Extension, extension } from 'showdown';
-import include from './extensions/include.js';
+import include from './extensions/include';
 import path from 'path';
 
 export class ShowMdParser extends EventEmitter {

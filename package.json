@@ -2,18 +2,19 @@
   "name": "show-md",
   "version": "0.5.0",
   "description": "show-md is a small nodejs server application which provides files on a HTTP server and converts md files into html files using showdown.",
-  "main": "build/index.js",
+  "main": "out/index.js",
   "bin": {
-    "show-md": "build/bin/show-md.js"
+    "show-md": "out/bin/show-md.js"
   },
   "directories": {
-    "bin": "./build/bin",
+    "bin": "./out/bin",
     "logs": "./logs"
   },
   "scripts": {
     "test": "echo Error: no test specified && exit 0",
-    "start": "node build/bin/show-md.js",
-    "preversion": "npm test",
+    "start": "node out/bin/show-md.js",
+    "preinstall": "tsc",
+    "preversion": "tsc && npm test",
     "prepublishOnly": "(echo init > logs/http.log) && (echo init > logs/system.log)",
     "postversion": "git push && git push --tags"
   },
