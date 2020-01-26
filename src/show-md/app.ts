@@ -1,27 +1,29 @@
 'use strict'
 
-const EventEmitter = require('events')
-const ShowMdConfig = require('./config.js')
-const ShowMdServer = require('./server.js')
-const ShowMdParser = require('./md_parser.js')
+import { EventEmitter } from 'events';
+import { ShowMdConfig } from './config';
+import  {ShowMdServer } from './server.js';
+import { ShowMdParser } from './md_parser.js';
 
 /**
  * A server class which consists of a HTTP server and a configuration.
  */
-class ShowMdApp extends EventEmitter {
+export class ShowMdApp extends EventEmitter {
+  config: ShowMdConfig;
+  parser: ShowMdParser;
+  server: ShowMdServer;
   /**
    * Init new ShowMdServer.
    */
-  constructor (config) {
+  constructor (config?: ShowMdConfig) {
     super()
     // Setup config
-    this.config = config
-    if (this.config === undefined) {
-      this.config = new ShowMdConfig()
-    } else if (!(this.config instanceof ShowMdConfig)) {
-      this.emit('error', 'Attribute config is no instance of ShowMdConfig')
-    }
-    this.config.on('warning', (msg) => { this.emit('warning', msg) })
+    if (config) 
+      this.config = config;
+    else
+      this.config = new ShowMdConfig();
+     
+    this.config.on('warning', (msg: string) => { this.emit('warning', msg) })
 
     this.parser = new ShowMdParser(this.config)
     this.server = new ShowMdServer(this.config, this.parser)
@@ -30,7 +32,7 @@ class ShowMdApp extends EventEmitter {
   /**
    * Server starts listening, event "started" is emitted.
    */
-  start () {
+  start (): void {
     try {
       this.server.listen()
       this.emit('started')
@@ -42,7 +44,7 @@ class ShowMdApp extends EventEmitter {
   /**
    * Server stops listening, event "stoped" is emitted.
    */
-  stop () {
+  stop (): void {
     if (this.server !== undefined && this.server.isListening()) {
       this.server.close()
       this.emit('stoped')
@@ -51,17 +53,17 @@ class ShowMdApp extends EventEmitter {
     }
   }
 
-  isRunning () {
+  isRunning (): boolean {
     return this.server.isListening()
   }
 
-  parseIncludes (path) {
+  parseIncludes (path: string): boolean {
     // TODO
+    return false;
   }
 
-  parse (inputPath, outputPath) {
+  parse (inputPath: string, outputPath: string): boolean {
     // TODO
+    return false;
   }
 }
-
-module.exports = ShowMdApp

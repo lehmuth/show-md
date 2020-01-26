@@ -1,20 +1,28 @@
-const EventEmitter = require('events');
-const ShowMdApp = require('./app.js');
-const parseArgs = require('minimist');
+import { EventEmitter } from 'events';
+import { ShowMdApp }  from './app.js';
+import parseArgs, { ParsedArgs } from 'minimist';
 
-class ShowMdCmdParser extends EventEmitter{
-  constructor(app){
+export enum ShowMdCommand{
+  HELP = 'help',
+  ROOT = 'root',
+  STATUS = 'status',
+  START = 'start',
+  STOP = 'stop',
+  EXIT = 'exit'
+}
+
+export class ShowMdCmdParser extends EventEmitter{
+  app: ShowMdApp;
+  constructor(app: ShowMdApp){
     super();
-    this.app = app;
-    if(this.app === undefined){
+    if(app)
+      this.app = app;
+    else
       this.app = new ShowMdApp();
-    }else if(!(this.app instanceof ShowMdApp)){
-      this.emit('error', 'Attribute app is no instance of ShowMdApp');
-    }
   }
 
-  parse(argv){
-    const args = parseArgs(argv, {
+  parse(argv: string[]): ShowMdCmdParser{
+    const args: ParsedArgs = parseArgs(argv, {
       string: ['dir', 'lang', 'style', 'port'],
       boolean: ['help'],
       alias: {
@@ -28,27 +36,28 @@ class ShowMdCmdParser extends EventEmitter{
     if(args._[0] === undefined || args._[0] === '')
       return this.cmdEmpty(args);
     switch(args._[0].toLowerCase()){
-      case "root":
+      case ShowMdCommand.ROOT:
         return this.cmdRoot(args);
-      case 'status':
+      case ShowMdCommand.STATUS:
         return this.cmdStatus(args);
-      case 'start':
+      case ShowMdCommand.START:
         return this.cmdStart(args);
-      case 'stop':
+      case ShowMdCommand.STOP:
         return this.cmdStop(args);
-      case 'exit':
+      case ShowMdCommand.EXIT:
         return this.cmdExit(args);
-      case 'help':
+      case ShowMdCommand.HELP:
         return this.cmdHelp(args);
       default:
         this.emit('error', "Unknown command \"" + args._[0] + "\"! Enter help for more detailed information.\n");
+        return this;
     }
   }
 
-  cmdEmpty(args){
+  cmdEmpty(args: ParsedArgs): ShowMdCmdParser{
     if(args.help){
       this.emit('info', `
-  Usage: show-md [OPTION]
+  Usage: show-md [start] [OPTION]
   Parse markdown files to html and show them on a http server.
   Uses current directory as server root and port 56657 if not diffrent specified.
 
@@ -63,7 +72,7 @@ class ShowMdCmdParser extends EventEmitter{
 
     -p, --port <port>                 set port for http server
 
-    -s, -- style <path | theme>       set custom stylesheet or a predefined theme.
+    -s, --style <path | theme>       set custom stylesheet or a predefined theme.
                                       Provide stylesheet as path to a css file.
 
                                       Predefined themes:
@@ -71,17 +80,17 @@ class ShowMdCmdParser extends EventEmitter{
                       [default]  ->   Default show-md optics
                        [github]  ->   Github styled markdown files
           `);
-      }
-    if(args.dir !== undefined) this.app.config.setRootPath(args.dir);
-    if(args.port !== undefined){
-      this.app.config.setPort(args.port);
-      console.log(this.app.config.getPort());
+        setTimeout(() => {process.exit(0);}, 1);
+        return this;
     }
+    if(args.dir !== undefined) this.app.config.setRootPath(args.dir);
+    if(args.port !== undefined) this.app.config.setPort(args.port);
     if(args.lang !== undefined) this.app.config.setLanguage(args.lang);
     if(args.style !== undefined) this.app.config.setStylesheet(args.style);
+    return this;
   }
 
-  cmdHelp(args){
+  cmdHelp(args: ParsedArgs): ShowMdCmdParser{
     this.emit('info', `
     root      to print current server root directory.
     status    to show current options.
@@ -93,12 +102,12 @@ class ShowMdCmdParser extends EventEmitter{
     return this;
   }
 
-  cmdRoot(args){
+  cmdRoot(args: ParsedArgs): ShowMdCmdParser{
     this.emit('info', this.app.config.getRootPath());
     return this;
   }
 
-  cmdStatus(args){
+  cmdStatus(args: ParsedArgs): ShowMdCmdParser{
     this.emit('info', `
     status:
     running:         ${this.app.isRunning()}
@@ -113,7 +122,7 @@ class ShowMdCmdParser extends EventEmitter{
     return this;
   }
 
-  cmdStart(args){
+  cmdStart(args: ParsedArgs): ShowMdCmdParser{
     if(args.help){
       this.emit('info', `
   Usage: start [OPTION]
@@ -150,7 +159,7 @@ class ShowMdCmdParser extends EventEmitter{
     return this;
   }
 
-  cmdStop(args){
+  cmdStop(args: ParsedArgs): ShowMdCmdParser{
     if(!this.app.isRunning())
       this.emit('warning', 'Server is not running.');
     else
@@ -158,18 +167,14 @@ class ShowMdCmdParser extends EventEmitter{
     return this;
   }
 
-  cmdExit(args){
+  cmdExit(args: ParsedArgs): ShowMdCmdParser{
     if(this.app.isRunning()){
       this.app.once('stoped', () => {setTimeout(() => {process.exit(0);}, 1);});
       this.app.stop();
     }else{
       process.exit(0);
     }
+    return this;
   }
 
-
-
-
 }
-
-module.exports = ShowMdCmdParser;

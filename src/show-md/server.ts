@@ -1,44 +1,50 @@
-const EventEmitter = require('events');
-const ShowMdConfig = require('./config.js');
-const ShowMdParser = require('./md_parser.js');
+import { EventEmitter } from 'events';
+import { ShowMdConfig } from './config.js';
+import { ShowMdParser } from './md_parser.js';
 const LogFactory = require('simple-node-logger');
-const http = require('http');
-const fs = require('fs');
-const url = require('url');
-const path = require('path');
-var config, parser, httpServer, log, opts = {
+import http, { Server, ServerResponse, IncomingMessage } from 'http';
+import fs from 'fs';
+import url from 'url';
+import path from 'path';
+let config: ShowMdConfig, parser: ShowMdParser, httpServer: Server, log: any, opts = {
   timestampFormat:'[YYYY-MM-DD HH:mm:ss]'
 };;
 
-class ShowMdServer extends EventEmitter{
-  constructor(_config, _parser){
+export class ShowMdServer extends EventEmitter{
+  constructor(_config?: ShowMdConfig, _parser?: ShowMdParser){
     super();
-    config = (_config === undefined || !(_config instanceof ShowMdConfig)) ? new ShowMdConfig() : _config;
+    config = _config ?? new ShowMdConfig();
     log = (log === undefined) ? LogFactory.createSimpleFileLogger(config.getHttpLogPath()) : log;
-    parser = (_parser === undefined) ? new ShowMdParser(config) : _parser;
+    parser = _parser ?? new ShowMdParser(config);
     httpServer = http.createServer();
     httpServer.on('request', handleRequest);
     httpServer.on('clientError', (err, socket) => {
     	socket.end('HTTP/1.1 400 Bad Request');
     });
   }
-  listen(){
+  listen(): void{
     httpServer.listen(config.getPort());
   }
-  close(){
+  close(): void{
     httpServer.close();
   }
-  isListening(){
+  isListening(): boolean{
     return httpServer.listening;
   }
 }
 
-function handleRequest(req, res){
+function handleRequest(req: IncomingMessage, res: ServerResponse): void{
   //get path to file
-  var href = url.parse(req.url, true).path;
+  let requestUrl = req.url ?? '';
+  let href = url.parse(requestUrl, true).path;
   log.info("REQUEST:  " + href);
 
-  var filename = path.join(config.getRootPath(), href);
+  if(!href){
+    log.info("ERROR No url specified.");
+    return;
+  }
+
+  let filename = path.join(config.getRootPath(), href);
   if(filename.indexOf(config.getRootPath()) !== 0) {
     return sendError(res, 403);
   }
@@ -85,7 +91,7 @@ function handleRequest(req, res){
   }
   //Check whether requested file is an image or js file
   else if(filename.match(/(.*\.(jpg|png|gif|ico|ttf)$)/i)){
-    var data = fs.readFileSync(filename);
+    var data = fs.readFileSync(filename, "binary");
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(data, 'binary');
     log.info("RETURNED: " + filename);
@@ -102,13 +108,11 @@ function handleRequest(req, res){
     return sendError(res, 403);
   }
 
-  function sendError(res, errorCode){
-    var errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
-    var data = fs.readFileSync(errorpath, 'utf-8')
+  function sendError(res: ServerResponse, errorCode: number): void{
+    let errorpath = path.join(config.getHtdocs(), "error/error" + errorCode + ".md");
+    let data = fs.readFileSync(errorpath, 'utf-8')
     res.writeHead(Number(errorCode), {'Content-Type': 'text/html'});
     res.end(parser.mdToHtml(data));
     log.info("ERROR " + errorCode + ": " + filename);
   }
 }
-
-module.exports = ShowMdServer;
