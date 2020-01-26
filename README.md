@@ -44,10 +44,10 @@ To install show-md use the npm command line tool, delivered with nodejs:
 
 Open your command line and navigate to the root directory, where you want to open the show-md server. To execute type:
 
-	show-md [-d|--dir <path>]
-	        [-p|--port <port>]
-            [-s|--style <path/to/style.css|default|github|none>]
-			[-l|--lang <html-lang-id>]
+	show-md start [-d|--dir <path>]
+				  [-p|--port <port>]
+				  [-s|--style <path/to/style.css|default|github|none>]
+				  [-l|--lang <html-lang-id>]
 
 - **-d**: sets another root directory. Default is the current working directory.
 - **-p**: changes the servers port. It is accessable by a browser with address: **http://localhost:[PORT]/**
