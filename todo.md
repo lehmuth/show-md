@@ -6,6 +6,7 @@
 ## Security:
 - [] include root directory into include extension
 - [x] Validate paths (path.resolve())
+- [] Remove XSS problem
 
 ## Argument parser:
 - [] --port to set port
@@ -44,4 +45,5 @@
 - [] show-md ls to list all active servers
 
 ## Other:
-- [] command to parse includes in a specified md file or recursivly for every md file in a specified directory
+- [] command to parse includes in a specified md file or recursivly for every md file in a specified          directory
+- [] open server in edit-mode or view-mode
