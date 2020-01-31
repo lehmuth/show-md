@@ -27,7 +27,7 @@
     "server"
   ],
   "author": "Dominik Lehmuth",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lehmuth/show-md/issues"
   },
@@ -38,6 +38,7 @@
     "simple-node-logger": "^18.12.24"
   },
   "devDependencies": {
+    "typescript": "^3.7.5",
     "@types/minimist": "^1.2.0",
     "@types/node": "^13.5.0",
     "@types/showdown": "^1.9.3",
