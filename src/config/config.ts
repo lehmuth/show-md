@@ -8,7 +8,7 @@ export class ShowMdConfig extends EventEmitter {
   language: string;
   stylesheetName: string;
   port: number;
-  httpLogPath: string;
+  logPath: string;
   includeExtensions: string[];
 
   constructor(){
@@ -18,7 +18,7 @@ export class ShowMdConfig extends EventEmitter {
     this.language = 'en';
     this.stylesheetName = 'github';
     this.port = 56657;
-    this.httpLogPath = path.join(__dirname, '../../logs/http.log');
+    this.logPath = path.join(__dirname, '../../logs');
     this.includeExtensions = ['.html', '.md', '.txt'];
   }
   
@@ -91,13 +91,13 @@ export class ShowMdConfig extends EventEmitter {
     return this.port;
   }
 
-  setHttpLogPath (httpLogPath: string): ShowMdConfig {
-    this.httpLogPath = path.resolve(httpLogPath);
+  setLogPath (httpLogPath: string): ShowMdConfig {
+    this.logPath = path.resolve(httpLogPath);
     return this;
   }
 
-  getHttpLogPath (): string {
-    return this.httpLogPath;
+  getLogPath (): string {
+    return this.logPath;
   }
 
   setIncludeExtensions (includeExtensions: string[]): ShowMdConfig {

@@ -23,10 +23,12 @@ export class ShowMdApp extends EventEmitter {
     else
       this.config = new ShowMdConfig();
      
-    this.config.on('warning', (msg: string) => { this.emit('warning', msg) })
+    this.config.on('warning', (msg: string) => { this.emit('warning', msg) });
 
-    this.parser = new ShowMdParser(this.config)
-    this.server = new ShowMdServer(this.config, this.parser)
+    this.parser = new ShowMdParser(this.config);
+    this.server = new ShowMdServer(this.config, this.parser);
+    this.server.on('info', (msg: string) => { this.emit('http-info', msg) });
+    this.server.on('error', (msg: string) => { this.emit('http-error', msg) });
   }
 
   /**

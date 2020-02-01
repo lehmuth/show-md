@@ -9,7 +9,7 @@
   "homepage": "https://github.com/lehmuth/show-md/README.md",
   "bugs": {
     "url": "https://github.com/lehmuth/show-md/issues",
-    "email" : "codes@diabolo-trickliste.de"
+    "email": "codes@diabolo-trickliste.de"
   },
   "license": "MIT",
   "author": "Dominik Lehmuth",
@@ -36,9 +36,12 @@
   "scripts": {
     "test": "node scripts/test-all.js",
     "start": "node build/bin/show-md.js",
-    "preinstall": "tsc",
+    "postinstall": "tsc",
     "preversion": "tsc && npm test",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "prebuild": "del ./build",
+    "build": "tsc",
+    "postbuild": "cpy '**/*' '!**/*.ts' ../build --cwd=./src --no-overwrite --parents"
   },
   "config": {},
   "dependencies": {

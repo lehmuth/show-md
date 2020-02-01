@@ -117,7 +117,7 @@ export class ShowMdCmdParser extends EventEmitter{
     stylesheetName:  ${this.app.config.getStylesheet()}
     stylesheetPath:  ${this.app.config.getStylesheetPath()}
     htdocs:          ${this.app.config.getHtdocs()}
-    httpLogPath      ${this.app.config.getHttpLogPath()}
+    httpLogPath      ${this.app.config.getLogPath()}
     `);
     return this;
   }
