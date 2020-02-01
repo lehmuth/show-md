@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from './config';
+import { ShowMdConfig } from '../config/config';
 import { Converter, Extension, extension } from 'showdown';
 import include from './extensions/include';
 import path from 'path';

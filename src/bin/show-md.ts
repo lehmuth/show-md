@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-//laoding default app
-import { getDefaultApp, ShowMdCmdParser } from '../index';
+//loading default app
+import { getDefaultApp, ShowMdCmdParser } from '../app';
 const app = getDefaultApp();
 
 //init logging

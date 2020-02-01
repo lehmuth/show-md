@@ -1,9 +1,9 @@
 'use strict'
 
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from './config';
-import  {ShowMdServer } from './server';
-import { ShowMdParser } from './md_parser';
+import { ShowMdConfig } from './config/config';
+import  {ShowMdServer } from './server/server';
+import { ShowMdParser } from './md-parser/md_parser';
 
 /**
  * A server class which consists of a HTTP server and a configuration.
@@ -66,4 +66,14 @@ export class ShowMdApp extends EventEmitter {
     // TODO
     return false;
   }
+}
+
+export * from './config/config';
+export * from './md-parser/md_parser';
+export * from './server/server';
+export * from './app';
+export * from './cmd-parser/cmd_parser';
+
+export function getDefaultApp() {
+  return new ShowMdApp();
 }

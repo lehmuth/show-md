@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from './config';
-import { ShowMdParser } from './md_parser';
+import { ShowMdConfig } from '../config/config';
+import { ShowMdParser } from '../md-parser/md_parser';
 const LogFactory = require('simple-node-logger');
 import http, { Server, ServerResponse, IncomingMessage } from 'http';
 import fs from 'fs';

@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/out/bin/show-md.js",
+            "program": "${workspaceFolder}/build/bin/show-md.js",
             "args": ["start"]
         }
 

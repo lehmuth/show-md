@@ -2,36 +2,45 @@
   "name": "show-md",
   "version": "0.5.1",
   "description": "show-md is a small nodejs server application which provides files on a HTTP server and converts md files into html files using showdown.",
-  "main": "out/index.js",
-  "bin": {
-    "show-md": "out/bin/show-md.js"
-  },
-  "directories": {
-    "bin": "./out/bin",
-    "logs": "./logs"
-  },
-  "scripts": {
-    "test": "echo Error: no test specified && exit 0",
-    "start": "node out/bin/show-md.js",
-    "preinstall": "tsc",
-    "preversion": "tsc && npm test",
-    "prepublishOnly": "(echo init > logs/http.log) && (echo init > logs/system.log)",
-    "postversion": "git push && git push --tags"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lehmuth/show-md.git"
-  },
   "keywords": [
     "markdown",
     "server"
   ],
-  "author": "Dominik Lehmuth",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lehmuth/show-md/issues"
-  },
   "homepage": "https://github.com/lehmuth/show-md/README.md",
+  "bugs": {
+    "url": "https://github.com/lehmuth/show-md/issues",
+    "email" : "codes@diabolo-trickliste.de"
+  },
+  "license": "MIT",
+  "author": "Dominik Lehmuth",
+  "contributors": [],
+  "main": "build/app.js",
+  "bin": {
+    "show-md": "build/bin/show-md.js"
+  },
+  "man": [
+    "./manuals/show-md.1"
+  ],
+  "directories": {
+    "bin": "./build/bin",
+    "logs": "./logs",
+    "doc": "./docs",
+    "lib": "./libs",
+    "man": "./mans",
+    "test": "./tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:lehmuth/show-md"
+  },
+  "scripts": {
+    "test": "node scripts/test-all.js",
+    "start": "node build/bin/show-md.js",
+    "preinstall": "tsc",
+    "preversion": "tsc && npm test",
+    "postversion": "git push && git push --tags"
+  },
+  "config": {},
   "dependencies": {
     "minimist": "^1.2.0",
     "showdown": "^1.9.1",
