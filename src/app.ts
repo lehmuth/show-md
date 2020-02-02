@@ -47,11 +47,12 @@ export class ShowMdApp extends EventEmitter {
   /**
    * Server stops listening, event "stoped" is emitted.
    */
-  stop (): void {
+  stop (): Promise<void> {
     if (this.server.isListening()) {
-      this.server.close();
+      return this.server.close();
     } else {
       this.emit('error', 'Trying to shut down server, but server not running!');
+      return Promise.reject(new Error);
     }
   }
 

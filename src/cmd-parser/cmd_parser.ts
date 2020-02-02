@@ -169,8 +169,7 @@ export class ShowMdCmdParser extends EventEmitter{
 
   cmdExit(args: ParsedArgs): ShowMdCmdParser{
     if(this.app.isRunning()){
-      this.app.once('stoped', () => {setTimeout(() => {process.exit(0);}, 1);});
-      this.app.stop();
+      this.app.stop().then(() => {process.exit(0);});
     }else{
       process.exit(0);
     }

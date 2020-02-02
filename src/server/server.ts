@@ -32,21 +32,19 @@ export class ShowMdServer extends EventEmitter{
     });
     //TODO start https
   }
-  close(): void{
-    this.httpServer.close((err?: Error | undefined) => {
-
+  close(): Promise<void>{
+    return new Promise<void>((resolve, reject) => {
+      this.httpServer.close((err) => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      });
     });
     //TODO stop https
   }
   isListening(): boolean{
     return this.httpServer.listening;
-  }
-
-  sendError(res: Response, errorCode: number, filename: string): void{
-    let errorpath = path.join(this.config.getHtdocs(), "error/error" + errorCode + ".md");
-    let data = fs.readFileSync(errorpath, 'utf-8')
-    res.status(Number(errorCode)).send(this.parser.mdToHtml(data));
-    this.emit("error", "ERROR " + errorCode + ": " + filename);
   }
 
   getConfig(): ShowMdConfig {
