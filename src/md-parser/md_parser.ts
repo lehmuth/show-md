@@ -44,7 +44,7 @@ export class ShowMdParser extends EventEmitter {
 				<head>\
 					<meta charset="utf-8"/>\
 					<meta name="viewport" content="width=device-width, initial-scale=1">\
-					<link rel="stylesheet" type="text/css" href="' + this.config.getStylesheetPath() + '"/>\
+					<link rel="stylesheet" type="text/css" href="/ressources/style/' + this.config.getStylesheet() + '"/>\
 				</head>\
 				<body>\
 					<div class="markdown-body">\
