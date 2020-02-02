@@ -2,7 +2,7 @@
 
 import { EventEmitter } from 'events';
 import { ShowMdConfig } from './config/config';
-import  {ShowMdServer } from './server/server';
+import { ShowMdServer } from './server/server';
 import { ShowMdParser } from './md-parser/md_parser';
 
 /**
@@ -27,19 +27,20 @@ export class ShowMdApp extends EventEmitter {
 
     this.parser = new ShowMdParser(this.config);
     this.server = new ShowMdServer(this.config, this.parser);
-    this.server.on('info', (msg: string) => { this.emit('http-info', msg) });
-    this.server.on('error', (msg: string) => { this.emit('http-error', msg) });
+    this.server.on('info', (msg: string) => { this.emit('http-info', msg); });
+    this.server.on('error', (msg: string) => { this.emit('http-error', msg); });
+    this.server.on('started', (msg: string) => { this.emit('started', msg); });
+    this.server.on('stoped', (msg: string) => { this.emit('stoped', msg); });
   }
 
   /**
-   * Server starts listening, event "started" is emitted.
+   * Server starts listening.
    */
   start (): void {
     try {
-      this.server.listen()
-      this.emit('started')
+      this.server.listen();
     } catch (err) {
-      this.emit('error', err)
+      this.emit('error', err);
     }
   }
 
@@ -47,11 +48,10 @@ export class ShowMdApp extends EventEmitter {
    * Server stops listening, event "stoped" is emitted.
    */
   stop (): void {
-    if (this.server !== undefined && this.server.isListening()) {
-      this.server.close()
-      this.emit('stoped')
+    if (this.server.isListening()) {
+      this.server.close();
     } else {
-      this.emit('error', 'Trying to shut down server, but server not running!')
+      this.emit('error', 'Trying to shut down server, but server not running!');
     }
   }
 
