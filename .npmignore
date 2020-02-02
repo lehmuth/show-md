@@ -4,3 +4,5 @@ package-lock.json
 logs/
 src/
 npm-debug.log
+docs/
+tsconfig.json
