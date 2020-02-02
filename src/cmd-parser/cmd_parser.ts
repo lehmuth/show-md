@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ShowMdApp }  from './app';
+import { ShowMdApp }  from '../app';
 import parseArgs, { ParsedArgs } from 'minimist';
 
 export enum ShowMdCommand{
@@ -115,9 +115,9 @@ export class ShowMdCmdParser extends EventEmitter{
     port:            ${this.app.config.getPort()}
     language:        ${this.app.config.getLanguage()}
     stylesheetName:  ${this.app.config.getStylesheet()}
-    stylesheetPath:  ${this.app.config.getStylesheetPath()}
+    stylesheetPath:  ${this.app.config.getStylesheetPath(this.app.config.getStylesheet())}
     htdocs:          ${this.app.config.getHtdocs()}
-    httpLogPath      ${this.app.config.getHttpLogPath()}
+    httpLogPath      ${this.app.config.getLogPath()}
     `);
     return this;
   }
@@ -169,8 +169,7 @@ export class ShowMdCmdParser extends EventEmitter{
 
   cmdExit(args: ParsedArgs): ShowMdCmdParser{
     if(this.app.isRunning()){
-      this.app.once('stoped', () => {setTimeout(() => {process.exit(0);}, 1);});
-      this.app.stop();
+      this.app.stop().then(() => {process.exit(0);});
     }else{
       process.exit(0);
     }

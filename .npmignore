@@ -1,5 +1,8 @@
 node_modules/
 package-lock.json
+.vscode/
+logs/
+src/
 npm-debug.log
-.npmrc
-lib/
+docs/
+tsconfig.json
