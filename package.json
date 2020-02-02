@@ -36,7 +36,7 @@
   "scripts": {
     "test": "node scripts/test-all.js",
     "preversion": "npm run build && npm test",
-    "postversion": "git push && git push --tags",
+    
     "build": "tsc",
     "postbuild": "copyfiles -e \"./src/public/**/*.ts\" ./src/public/**/* ./build -V -u 1",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/bin/show-md.ts start",
