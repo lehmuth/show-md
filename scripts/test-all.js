@@ -1,2 +1,2 @@
-console.log("Error: no test specified && exit 0");
-process.exit(0);
+console.log("Error: no test specified");
+process.exit(1);
