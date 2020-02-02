@@ -33,8 +33,8 @@ cmdParser.on('info', (msg: string) => {systemLog.info(msg);});
 //init Server
 app.on('warning', (msg: string) => {systemLog.warn(msg);});
 app.on('error', (msg: string) => {systemLog.error(msg);});
-app.on('started', () => {systemLog.info("Server started on http://localhost:" + app.config.getPort());});
-app.on('stoped', () => {systemLog.info("Server stoped.");});
+app.on('started', (msg: string) => {systemLog.info(msg);});
+app.on('stoped', (msg: string) => {systemLog.info(msg);});
 app.on('http-info', (msg: string) => {httpLog.info(msg);});
 app.on('http-error', (msg: string) => {httpLog.error(msg);});
 
