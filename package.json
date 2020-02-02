@@ -1,6 +1,6 @@
 {
   "name": "show-md",
-  "version": "0.6.0-dev.0",
+  "version": "0.6.0-dev.1",
   "description": "show-md is a small nodejs server application which provides files on a HTTP server and converts md files into html files using showdown.",
   "keywords": [
     "markdown",
@@ -36,7 +36,6 @@
   "scripts": {
     "test": "node scripts/test-all.js",
     "preversion": "npm run build && npm test",
-    
     "build": "tsc",
     "postbuild": "copyfiles -e \"./src/public/**/*.ts\" ./src/public/**/* ./build -V -u 1",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/bin/show-md.ts start",
