@@ -115,7 +115,7 @@ export class ShowMdCmdParser extends EventEmitter{
     port:            ${this.app.config.getPort()}
     language:        ${this.app.config.getLanguage()}
     stylesheetName:  ${this.app.config.getStylesheet()}
-    stylesheetPath:  ${this.app.config.getStylesheetPath()}
+    stylesheetPath:  ${this.app.config.getStylesheetPath(this.app.config.getStylesheet())}
     htdocs:          ${this.app.config.getHtdocs()}
     httpLogPath      ${this.app.config.getLogPath()}
     `);

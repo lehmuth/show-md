@@ -3,41 +3,83 @@ import { EventEmitter } from 'events';
 import fs from 'fs';
 
 export class ShowMdConfig extends EventEmitter {
-  htdocs: string;
-  rootPath: string;
   language: string;
   stylesheetName: string;
+  stylesheets: [string, string][];
   port: number;
-  logPath: string;
   includeExtensions: string[];
+  pathVariables: [string, string][];
+  htDirs: string[];
+  defaultFile: string;
 
   constructor(){
     super();
-    this.htdocs = path.join(__dirname, '../../htdocs');
-    this.rootPath = process.cwd();
     this.language = 'en';
     this.stylesheetName = 'github';
     this.port = 56657;
-    this.logPath = path.join(__dirname, '../../logs');
     this.includeExtensions = ['.html', '.md', '.txt'];
+    this.stylesheets = [
+      ["default", "{APP_ROOT}/build/public/default.css"],
+      ["github", "{APP_ROOT}/libs/github.css"],
+      ["none", "{APP_ROOT}/build/public/none.css"]
+    ];
+    this.pathVariables = [
+      ["APP_ROOT", path.resolve(__dirname, '../../')],
+      ["HTDOCS", path.resolve(__dirname, '../../htdocs')],
+      ["SERVER_ROOT", path.resolve(process.cwd())],
+      ["LOG", path.resolve(__dirname, '../../logs')]
+    ];
+    this.htDirs = [
+      "{SERVER_ROOT}",
+      "{HTDOCS}"
+    ];
+    this.defaultFile = "README.md";
+  }
+
+  getPath (id: string): string{
+    for(let pathTouple of this.pathVariables) {
+      if(pathTouple[0] === id){
+        return pathTouple[1];
+      }
+    }
+    throw new Error('Undefined path to variable: ' + id);
+  }
+
+  setPath (id: string, value: string): ShowMdConfig {
+    for(let pathTouple of this.pathVariables) {
+      if(pathTouple[0] === id){
+        pathTouple[1] = path.resolve(value);
+        return this;
+      }
+    }
+    this.pathVariables.push([id, value]);
+    return this;
+  }
+
+  replacePathVariables(target: string): string {
+    return path.resolve( 
+      target.replace(/^{(.*)}/,
+        (a:string, variable: string): string => {
+          return this.getPath(variable); 
+        }
+      )
+    );
   }
   
   setHtdocs (htdocs: string): ShowMdConfig {
-    this.htdocs = path.resolve(htdocs)
-    return this;
+    return this.setPath('HTDOCS', htdocs);
   }
 
   getHtdocs (): string {
-    return this.htdocs;
+    return this.getPath('HTDOCS');
   }
 
   setRootPath (rootPath: string): ShowMdConfig {
-    this.rootPath = path.resolve(rootPath);
-    return this;
+    return this.setPath('SERVER_ROOT', rootPath);
   }
 
   getRootPath (): string {
-    return this.rootPath;
+    return this.getPath('SERVER_ROOT');
   }
 
   setLanguage (language: string): ShowMdConfig {
@@ -58,28 +100,17 @@ export class ShowMdConfig extends EventEmitter {
     return this.stylesheetName;
   }
 
-  getStylesheetPath (): string {
-    let stylesheet: string = this.getStylesheet();
-    if(stylesheet === 'none')
-      return '/resources/style/none.css';
-    if(stylesheet === 'default')
-      return '/resources/style/default.css';
-    if(stylesheet === 'github')
-      return '/resources/style/github.css';
-    if(stylesheet.match(/\.(css|CSS)$/)){
-        let filename: string = path.resolve(this.getRootPath() + stylesheet);
-        try {
-          // Check whether stylesheet is a file
-          let stat: fs.Stats = fs.statSync(filename);
-          if (stat.isFile()) { 
-            return path.relative(this.getRootPath(), filename) ;
-          }
-        } catch (e) {
-          this.emit('warning', 'The currently specified stylesheet does not exist. Fallback to default was performed.');
-        }
+  getDefinedStylesheets (): string[] {
+    return this.stylesheets.map((elem) => {return elem[0];});
+  }
+
+  getStylesheetPath (name: string): string {
+    for(let styleTouple of this.stylesheets){
+      if(styleTouple[0] === name){
+        return this.replacePathVariables(styleTouple[1]);
+      }
     }
-    this.emit('warning', 'The currently specified stylesheet is not a stylesheet. Fallback to default was performed.');
-    return '/resources/style/default.css';
+    throw new Error('Undefined stylesheet: ' + name);
   }
 
   setPort (port: number): ShowMdConfig {
@@ -91,13 +122,12 @@ export class ShowMdConfig extends EventEmitter {
     return this.port;
   }
 
-  setLogPath (httpLogPath: string): ShowMdConfig {
-    this.logPath = path.resolve(httpLogPath);
-    return this;
+  setLogPath (logPath: string): ShowMdConfig {
+    return this.setPath('LOG', logPath);
   }
 
   getLogPath (): string {
-    return this.logPath;
+    return this.getPath('LOG');
   }
 
   setIncludeExtensions (includeExtensions: string[]): ShowMdConfig {
@@ -112,5 +142,30 @@ export class ShowMdConfig extends EventEmitter {
 
   getIncludeExtensions (): string[] {
     return this.includeExtensions;
+  }
+
+  getHtDirs (): string[] {
+    return this.htDirs.map((dir): string => {
+      return this.replacePathVariables(dir);
+    });
+  } 
+
+  setHtDirs (htDirs: string[]): ShowMdConfig {
+    this.htDirs = htDirs;
+    return this;
+  }
+
+  addHtDir (htDir: string): ShowMdConfig {
+    this.htDirs.push(htDir);
+    return this;
+  }
+
+  getDefaultFile (): string {
+    return this.defaultFile;
+  }
+
+  setDefaultFile (defaultFile: string): ShowMdConfig {
+    this.defaultFile = defaultFile;
+    return this;
   }
 };
