@@ -20,7 +20,7 @@ export default {
 				//Exception in case of the file does not exist
 				return "Include-Error: File does not exist.";
 			}
-			if(options.includeExtensions.includes(path.extname(filename))) {
+			if(options.includeExtensions.includes(path.extname(filename).substr(1))) {
 				let file = fs.readFileSync(filename, 'utf-8');
 				return converter.makeHtml(file);
 			} else if (path.extname(filename) === '.csv') {
