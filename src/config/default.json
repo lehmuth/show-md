@@ -1,0 +1,28 @@
+{
+    "port": 56657,
+    "stylesheetName": "github",
+    "language": "en",
+    "defaultFile": "README.md",
+    "includeExtensions": [
+        "html",
+        "md",
+        "txt"
+    ],
+    "stylesheets": [
+        ["default", "{PUBLIC}/default.css"],
+        ["github", "{LIBS}/github.css"],
+        ["none", "{PUBLIC}/none.css"]
+    ],
+    "pathVariables": [
+        ["LOGS", "{APP_ROOT}/logs"]
+    ],
+    "htDirs": [
+        "{SERVER_ROOT}",
+        "{HTDOCS}"
+    ],
+    "errorFiles": [
+        [403, "{HTDOCS}/error/error403.md"],
+        [404, "{HTDOCS}/error/error404.md"],
+        [500, "{HTDOCS}/error/error500.md"]
+    ]
+}

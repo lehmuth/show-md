@@ -7,7 +7,7 @@ import path from 'path';
 export class ShowMdParser extends EventEmitter {
   config: ShowMdConfig;
   converter: Converter;
-  constructor (config: ShowMdConfig) { 
+  constructor (config?: ShowMdConfig) { 
     super();
     this.config = config ?? new ShowMdConfig();
     // Initialize and configure showdown converter
@@ -38,20 +38,20 @@ export class ShowMdParser extends EventEmitter {
 
   // Generate html file
   generateHtmlFile (content: string): string {
-    let html = '\
-			<!DOCTYPE html>\
-			<html lang="' + this.config.getLanguage() + '">\
-				<head>\
-					<meta charset="utf-8"/>\
-					<meta name="viewport" content="width=device-width, initial-scale=1">\
-					<link rel="stylesheet" type="text/css" href="/ressources/style/' + this.config.getStylesheet() + '"/>\
-				</head>\
-				<body>\
-					<div class="markdown-body">\
-						' + content + '\
-					</div>\
-				</body>\
-			</html>';
+    let html = `
+<!DOCTYPE html>
+<html lang="${this.config.getLanguage()}">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/ressources/style/${this.config.getStylesheet()}"/>
+  </head>
+  <body>
+    <div class="markdown-body">
+      ${content}
+    </div>
+  </body>
+</html>`;
     return html;
   }
 }
