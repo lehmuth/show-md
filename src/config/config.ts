@@ -1,6 +1,5 @@
 import path from 'path';
 import { EventEmitter } from 'events';
-import fs from 'fs';
 
 export class ShowMdConfig extends EventEmitter {
   language: string;
@@ -11,29 +10,47 @@ export class ShowMdConfig extends EventEmitter {
   pathVariables: [string, string][];
   htDirs: string[];
   defaultFile: string;
+  errorFiles: [number, string][];
+
+  APP_ROOT: string = 'APP_ROOT';
+  SERVER_ROOT: string = 'SERVER_ROOT';
+  LOGS: string = 'LOGS';
+  HTDOCS: string = 'HTDOCS';
+  PUBLIC: string = 'PUBLIC';
+  LIBS: string = 'LIBS';
 
   constructor(){
     super();
-    this.language = 'en';
-    this.stylesheetName = 'github';
-    this.port = 56657;
-    this.includeExtensions = ['.html', '.md', '.txt'];
-    this.stylesheets = [
+    let defaultConfig = require('./default.json');
+    this.language = defaultConfig.language ?? 'en';
+    this.stylesheetName = defaultConfig.stylesheetName ?? 'github';
+    this.port = defaultConfig.port ?? 56657;
+    this.includeExtensions = defaultConfig.includeExtensions ?? ['.html', '.md', '.txt'];
+    this.stylesheets = defaultConfig.stylesheets as [string, string][] ?? [
       ["default", "{APP_ROOT}/build/public/default.css"],
       ["github", "{APP_ROOT}/libs/github.css"],
       ["none", "{APP_ROOT}/build/public/none.css"]
     ];
-    this.pathVariables = [
-      ["APP_ROOT", path.resolve(__dirname, '../../')],
-      ["HTDOCS", path.resolve(__dirname, '../../htdocs')],
-      ["SERVER_ROOT", path.resolve(process.cwd())],
-      ["LOG", path.resolve(__dirname, '../../logs')]
+    this.pathVariables = defaultConfig.pathVariables as [string, string][] ?? [
+      ["LOGS", path.resolve(__dirname, '../../logs')]
     ];
-    this.htDirs = [
+    this.pathVariables.push(
+      [this.APP_ROOT, path.resolve(__dirname, '../../')],
+      [this.HTDOCS, path.resolve(__dirname, "../../htdocs")],
+      [this.SERVER_ROOT, path.resolve(process.cwd())],
+      [this.PUBLIC, path.resolve(__dirname, "../../build/public")],
+      [this.LIBS, path.resolve(__dirname, "../../libs")]
+    );
+    this.htDirs = defaultConfig.htDirs ?? [
       "{SERVER_ROOT}",
       "{HTDOCS}"
     ];
-    this.defaultFile = "README.md";
+    this.defaultFile = defaultConfig.defaultFile ?? "README.md";
+    this.errorFiles = defaultConfig.errorFiles as [number, string][] ?? [
+      [403, "{HTDOCS}/error/error403.md"],
+      [404, "{HTDOCS}/error/error404.md"],
+      [500, "{HTDOCS}/error/error500.md"]
+    ]
   }
 
   getPath (id: string): string{
@@ -64,22 +81,6 @@ export class ShowMdConfig extends EventEmitter {
         }
       )
     );
-  }
-  
-  setHtdocs (htdocs: string): ShowMdConfig {
-    return this.setPath('HTDOCS', htdocs);
-  }
-
-  getHtdocs (): string {
-    return this.getPath('HTDOCS');
-  }
-
-  setRootPath (rootPath: string): ShowMdConfig {
-    return this.setPath('SERVER_ROOT', rootPath);
-  }
-
-  getRootPath (): string {
-    return this.getPath('SERVER_ROOT');
   }
 
   setLanguage (language: string): ShowMdConfig {
@@ -122,14 +123,6 @@ export class ShowMdConfig extends EventEmitter {
     return this.port;
   }
 
-  setLogPath (logPath: string): ShowMdConfig {
-    return this.setPath('LOG', logPath);
-  }
-
-  getLogPath (): string {
-    return this.getPath('LOG');
-  }
-
   setIncludeExtensions (includeExtensions: string[]): ShowMdConfig {
     this.includeExtensions = includeExtensions;
     return this;
@@ -167,5 +160,25 @@ export class ShowMdConfig extends EventEmitter {
   setDefaultFile (defaultFile: string): ShowMdConfig {
     this.defaultFile = defaultFile;
     return this;
+  }
+
+  setErrorFile (errorCode: number, file: string): ShowMdConfig {
+    for(let errTouple of this.errorFiles) {
+      if(errTouple[0] === errorCode){
+        errTouple[1] = path.resolve(file);
+        return this;
+      }
+    }
+    this.errorFiles.push([errorCode, file]);
+    return this;
+  }
+
+  getErrorFile (errorCode: number): string {
+    for(let errTouple of this.errorFiles) {
+      if(errTouple[0] === errorCode){
+        return this.replacePathVariables(errTouple[1]);
+      }
+    }
+    throw new Error('Undefined path for error ' + errorCode);
   }
 };
