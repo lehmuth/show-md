@@ -47,21 +47,14 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
 
     router.use((err: RouterError, req: Request, res: Response, next: NextFunction) => {
         if (err) {
-            let errorcode = err.code ?? 500;
-            let errorpath = path.join(server.getConfig().getHtdocs(), "error/error" + errorcode + ".md");
+            let errorcode =  err.code ?? 500;
+            let errorpath = server.getConfig().getErrorFile(errorcode);
             let data = fs.readFileSync(errorpath, 'utf-8')
             res.status(errorcode).send(server.getParser().mdToHtml(data));
             server.emit("error", "ERROR " + errorcode + ": " + url.parse(req.url, true).path);
         } else {
-            next();
+            next(err);
         }
-    });
-
-    router.use((err: Error, req: Request, res: Response, next: NextFunction) => {   
-        if (res.headersSent) {
-            return next(err);
-        }
-        res.status(500).send('Internal error');
     });
 
     return router;
