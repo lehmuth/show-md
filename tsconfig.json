@@ -28,5 +28,14 @@
   },
   "include": [
     "src/**/*.ts"
-  ]
+  ],
+  "typedocOptions": {
+    "compilerOptions": {
+      "normalTypeScriptOptions": "here"
+    },
+    "typedocOptions": {
+        "mode": "modules",
+        "out": "./docs"
+    }
+}
 }
