@@ -52,7 +52,7 @@ export function setUpDirectoryRouter(server: ShowMdServer, dir: string): Router 
     });
 
     router.get(/.*(?!\.).*/, (req: Request, res: Response, next: NextFunction) => {
-        let filename = path.join(dir, req.path, server.getConfig().getDefaultFile());
+        let filename = path.join(dir, req.path, server.getConfig().getDefaultFile() || '');
         try {
             let data = fs.readFileSync(filename, "utf-8");
             server.getParser().setFilePath(filename);

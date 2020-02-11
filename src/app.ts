@@ -1,7 +1,7 @@
 'use strict'
 
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from './config/config';
+import { Configuration } from './config/config';
 import { ShowMdServer } from './server/server';
 import { ShowMdParser } from './md-parser/md_parser';
 
@@ -9,19 +9,19 @@ import { ShowMdParser } from './md-parser/md_parser';
  * A server class which consists of a HTTP server and a configuration.
  */
 export class ShowMdApp extends EventEmitter {
-  config: ShowMdConfig;
+  config: Configuration;
   parser: ShowMdParser;
   server: ShowMdServer;
   /**
    * Init new ShowMdServer.
    */
-  constructor (config?: ShowMdConfig) {
+  constructor (config?: Configuration) {
     super()
     // Setup config
     if (config) 
       this.config = config;
     else
-      this.config = new ShowMdConfig();
+      this.config = new Configuration();
      
     this.config.on('warning', (msg: string) => { this.emit('warning', msg) });
 

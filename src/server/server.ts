@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from '../config/config';
+import { Configuration } from '../config/config';
 import { ShowMdParser } from '../md-parser/md_parser';
 import { Server as HttpServer } from 'http';
 import { Server as HttpsServer } from 'https';
@@ -10,13 +10,13 @@ import { setUpDirectoryRouter } from './routers/directory-router';
 import { setUpDefaultRouter } from './routers/default-router';
 
 export class ShowMdServer extends EventEmitter{
-  config: ShowMdConfig;
+  config: Configuration;
   parser: ShowMdParser;
   httpServer: HttpServer;
   httpsServer: HttpsServer;
-  constructor(config?: ShowMdConfig, parser?: ShowMdParser){
+  constructor(config?: Configuration, parser?: ShowMdParser){
     super();
-    this.config = config ?? new ShowMdConfig();
+    this.config = config ?? new Configuration();
     this.parser = parser ?? new ShowMdParser(this.config);
     let exp: Express = express();
     for(let dir of this.config.getHtDirs()) {
@@ -47,7 +47,7 @@ export class ShowMdServer extends EventEmitter{
     return this.httpServer.listening;
   }
 
-  getConfig(): ShowMdConfig {
+  getConfig(): Configuration {
     return this.config;
   }
 

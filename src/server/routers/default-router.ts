@@ -4,20 +4,20 @@ import fs from 'fs';
 import { Request, Response, Router, NextFunction } from 'express';
 import { RouterError } from '../router-errors';
 import { ShowMdServer } from '../server';
+import { Configuration } from 'src/config/config';
 
 export function setUpDefaultRouter(server: ShowMdServer): Router {
 
     const router: Router = Router();
     
     router.use((req: Request, res: Response, next: Function) => {
-        let href = url.parse(req.url, true).path;
-        server.emit('info', 'REQUEST: ' + href);
+        server.emit('info', 'REQUEST: ' + req.path);
         next();
     });
 
     // Add route for default favicon
     router.get("/favicon.ico", (req: Request, res: Response, next: NextFunction) => {
-        let href = path.join(__dirname, '../../../assets/icons/favicon.ico');
+        let href = path.join(server.getConfig().getPath(Configuration.PATH_ASSETS), 'icons/favicon.ico');
         res.sendFile(href, (err) => {
             if (err) {
                 next();
@@ -27,19 +27,30 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
         });
     });
 
-    // Add route for stylesheets, defined in config.stylesheets
-    for(let style of server.getConfig().getDefinedStylesheets()) {
-        router.get("/ressources/style/" + style, (req: Request, res: Response, next: NextFunction) => {
-            let href: string = server.getConfig().getStylesheetPath(style);
-            res.sendFile(href, (err) => {
+    // Add route for stylesheets, defined in config.registeredStylesheets
+    for(let style of server.getConfig().getRegisteredStylesheets()) {
+        router.get("/ressources/style/" + style[0], (req: Request, res: Response, next: NextFunction) => {
+            res.sendFile(style[1], (err) => {
                 if (err) {
                     next();
                 } else {
-                    server.emit('info', 'RESPONSE: ' + href);
+                    server.emit('info', 'RESPONSE: ' + style[0]);
                 }
             });
         });
     }
+
+    // Add route to assets directory
+    router.get("/ressources/assets/", (req: Request, res: Response, next: NextFunction) => {
+        let href = url.parse(req.url, true).path?.substr("/ressources/assets/".length) || '';
+        res.sendFile(href, (err) => {
+            if (err) {
+                next();
+            } else {
+                server.emit('info', 'RESPONSE: ' + href);
+            }
+        });
+    });
 
     router.all("/*", (req: Request, res: Response, next: NextFunction) => {
         next(new RouterError(404, 'File not found'));

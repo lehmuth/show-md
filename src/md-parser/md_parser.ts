@@ -1,15 +1,15 @@
 import { EventEmitter } from 'events';
-import { ShowMdConfig } from '../config/config';
+import { Configuration } from '../config/config';
 import { Converter, Extension, extension } from 'showdown';
 import include from './extensions/include';
 import path from 'path';
 
 export class ShowMdParser extends EventEmitter {
-  config: ShowMdConfig;
+  config: Configuration;
   converter: Converter;
-  constructor (config?: ShowMdConfig) { 
+  constructor (config?: Configuration) { 
     super();
-    this.config = config ?? new ShowMdConfig();
+    this.config = config ?? new Configuration();
     // Initialize and configure showdown converter
     extension('include', include);
     this.converter = new Converter({ extensions: [include] });

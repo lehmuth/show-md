@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import { ShowMdApp }  from '../app';
 import parseArgs, { ParsedArgs } from 'minimist';
+import { Configuration } from 'src/config/config';
 
 export enum ShowMdCommand{
   HELP = 'help',
@@ -83,7 +84,7 @@ export class ShowMdCmdParser extends EventEmitter{
         setTimeout(() => {process.exit(0);}, 1);
         return this;
     }
-    if(args.dir !== undefined) this.app.config.setPath(this.app.config.SERVER_ROOT, args.dir);
+    if(args.dir !== undefined) this.app.config.addPath(Configuration.PATH_SERVER_ROOT, args.dir);
     if(args.port !== undefined) this.app.config.setPort(args.port);
     if(args.lang !== undefined) this.app.config.setLanguage(args.lang);
     if(args.style !== undefined) this.app.config.setStylesheet(args.style);
@@ -103,7 +104,7 @@ export class ShowMdCmdParser extends EventEmitter{
   }
 
   cmdRoot(args: ParsedArgs): ShowMdCmdParser{
-    this.emit('info', this.app.config.getPath(this.app.config.SERVER_ROOT));
+    this.emit('info', this.app.config.getPath(Configuration.PATH_SERVER_ROOT));
     return this;
   }
 
@@ -111,13 +112,13 @@ export class ShowMdCmdParser extends EventEmitter{
     this.emit('info', `
     status:
     running:         ${this.app.isRunning()}
-    rootPath:        ${this.app.config.getPath(this.app.config.SERVER_ROOT)}
+    rootPath:        ${this.app.config.getPath(Configuration.PATH_SERVER_ROOT)}
     port:            ${this.app.config.getPort()}
     language:        ${this.app.config.getLanguage()}
     stylesheetName:  ${this.app.config.getStylesheet()}
     stylesheetPath:  ${this.app.config.getStylesheetPath(this.app.config.getStylesheet())}
     htdocs:          ${this.app.config.getHtDirs()}
-    httpLogPath      ${this.app.config.getPath(this.app.config.LOGS)}
+    httpLogPath      ${this.app.config.getPath(Configuration.PATH_LOGS)}
     `);
     return this;
   }
@@ -150,7 +151,7 @@ export class ShowMdCmdParser extends EventEmitter{
     }else if(this.app.isRunning()){
       this.emit('warning', 'Server already running on http://localhost:' + this.app.config.getPort());
     }else{
-      if(args.dir !== undefined) this.app.config.setPath(this.app.config.SERVER_ROOT, args.dir);
+      if(args.dir !== undefined) this.app.config.addPath(Configuration.PATH_SERVER_ROOT, args.dir);
       if(args.port !== undefined) this.app.config.setPort(args.port);
       if(args.lang !== undefined) this.app.config.setLanguage(args.lang);
       if(args.style !== undefined) this.app.config.setStylesheet(args.style);
