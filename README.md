@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lehmuth/show-md) 
+
 # show-md - short user guide
 
 show-md is a node.js application which converts Markdown files to html files and hosts them on a HTTP server, ready to show in browser. To convert markdown to html [showdown](https://github.com/showdownjs/showdown/) by [showdownjs](http://showdownjs.com/) is used, with additional extensions.
