@@ -133,6 +133,12 @@ export class ShowMdConfig extends EventEmitter {
     return this;
   }
 
+  removeIncludeExtension(extension: string): ShowMdConfig {
+    let index = this.includeExtensions.indexOf(extension);
+    this.includeExtensions.splice(index, 1);
+    return this;
+  }
+
   getIncludeExtensions (): string[] {
     return this.includeExtensions;
   }

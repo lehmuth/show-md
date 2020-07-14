@@ -2,7 +2,9 @@ import { EventEmitter } from 'events';
 import { ShowMdConfig } from '../config/config';
 import { Converter, Extension, extension } from 'showdown';
 import include from './extensions/include';
+import replaceLinks from './extensions/replace-links';
 import path from 'path';
+import fs from 'fs';
 
 export class ShowMdParser extends EventEmitter {
   config: ShowMdConfig;
@@ -12,16 +14,30 @@ export class ShowMdParser extends EventEmitter {
     this.config = config ?? new ShowMdConfig();
     // Initialize and configure showdown converter
     extension('include', include);
-    this.converter = new Converter({ extensions: [include] });
-    this.converter.setOption('tables', true);							// enable tables
-    this.converter.setOption('customizedHeaderId', true);				// makes it possible to select a custom header id with {custom_id}
-    this.converter.setOption('ghCompatibleHeaderId', true);				// generates header ids compatible with github style (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)
-    this.converter.setOption('parseImgDimensions', true);				// makes it possible to add dimensions to image includes
-    this.converter.setOption('tasklists', true);						// enables the option of tasklists with [ ] and [x]
-    this.converter.setOption('emoji', true);							// enables emoji import
-    this.converter.setOption('underline', true);						// enables underline with __
-    this.converter.setOption('strikethrough', true);					// enables strikethrew with ~~
-    this.converter.setOption('includeExtensions', this.config.getIncludeExtensions());
+    extension('replaceLinks', replaceLinks);
+
+    this.converter = this.initConverter(false);
+  }
+
+  private initConverter(build: boolean): Converter {
+    let extensions = []
+    extensions.push('include');
+    if(build) {
+      extensions.push('replaceLinks');
+    }
+
+    let converter = new Converter({ extensions });
+    converter.setOption('customizedHeaderId', true);				// makes it possible to select a custom header id with {custom_id}
+    converter.setOption('tables', true);							// enable tables
+    converter.setOption('ghCompatibleHeaderId', true);				// generates header ids compatible with github style (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)
+    converter.setOption('parseImgDimensions', true);				// makes it possible to add dimensions to image includes
+    converter.setOption('tasklists', true);						// enables the option of tasklists with [ ] and [x]
+    converter.setOption('emoji', true);							// enables emoji import
+    converter.setOption('underline', true);						// enables underline with __
+    converter.setOption('strikethrough', true);					// enables strikethrew with ~~
+    converter.setOption('includeExtensions', this.config.getIncludeExtensions());
+
+    return converter;
   }
 
   setFilePath (filename: string): void {
@@ -53,5 +69,56 @@ export class ShowMdParser extends EventEmitter {
   </body>
 </html>`;
     return html;
+  }
+
+  build (inputDir: string, outputDir: string): boolean {
+    let inputStats = fs.statSync(inputDir);
+    
+    if(!inputStats.isDirectory()) {
+      console.log('Your specified input is no directory!');
+    }
+    
+    if(fs.existsSync(outputDir)) {
+      let outputStats = fs.statSync(outputDir);
+      if(!outputStats.isDirectory()) {
+        console.log('The specified output path is no directory!');
+        return false;
+      }
+
+    } else {
+      fs.mkdirSync(outputDir)
+    }
+
+    fs.readdir(inputDir, (err, files) => {
+        //handling error
+        if (err) {
+            console.log('Unable to scan input directory: ' + inputDir);
+            return false;
+        }
+
+        this.converter = this.initConverter(true);
+        //listing all files
+        files.forEach((file) => {
+            let fileInputPath = path.resolve(inputDir, file);
+            let stat = fs.statSync(fileInputPath);
+            let fileOutputPath = path.resolve(outputDir, file);
+            if(stat.isDirectory()) {
+              this.build(fileInputPath, fileOutputPath);
+            } else if (file.match(/.*\.(md)|(MD)$/i)){
+              let data = fs.readFileSync(fileInputPath, "utf-8");
+              this.setFilePath(inputDir);
+              fileOutputPath = fileOutputPath.slice(0, -2) + 'html';
+              fs.writeFileSync(fileOutputPath, this.mdToHtml(data));
+            } else if (file.match(/.*\.(jpg|png|gif|ico|ttf|css|js)$/i)) {
+              fs.writeFileSync(fileOutputPath, fs.readFileSync(fileInputPath));
+            } else {
+              console.log("illegal file extension: ", file);
+            }
+        });
+
+        this.converter = this.initConverter(false);
+    });
+
+    return true;
   }
 }

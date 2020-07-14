@@ -5,6 +5,7 @@ import parseArgs, { ParsedArgs } from 'minimist';
 export enum ShowMdCommand{
   HELP = 'help',
   ROOT = 'root',
+  BUILD = 'build',
   STATUS = 'status',
   START = 'start',
   STOP = 'stop',
@@ -23,14 +24,15 @@ export class ShowMdCmdParser extends EventEmitter{
 
   parse(argv: string[]): ShowMdCmdParser{
     const args: ParsedArgs = parseArgs(argv, {
-      string: ['dir', 'lang', 'style', 'port'],
+      string: ['dir', 'lang', 'style', 'port', 'output'],
       boolean: ['help'],
       alias: {
         d: 'dir',
         h: 'help',
         l: 'lang',
         p: 'port',
-        s: 'style'
+        s: 'style',
+        o: 'output'
       }
     });
     if(args._[0] === undefined || args._[0] === '')
@@ -48,6 +50,8 @@ export class ShowMdCmdParser extends EventEmitter{
         return this.cmdExit(args);
       case ShowMdCommand.HELP:
         return this.cmdHelp(args);
+      case ShowMdCommand.BUILD:
+        return this.cmdBuild(args);
       default:
         this.emit('error', "Unknown command \"" + args._[0] + "\"! Enter help for more detailed information.\n");
         return this;
@@ -59,7 +63,7 @@ export class ShowMdCmdParser extends EventEmitter{
       this.emit('info', `
   Usage: show-md [start] [OPTION]
   Parse markdown files to html and show them on a http server.
-  Uses current directory as server root and port 56657 if not diffrent specified.
+  Uses current directory as server root and port 56657 if not different specified.
 
   Mandatory arguments to long options are mandatory for short options too.
     -d, --dir  <dir>                  set servers root directory
@@ -104,6 +108,11 @@ export class ShowMdCmdParser extends EventEmitter{
 
   cmdRoot(args: ParsedArgs): ShowMdCmdParser{
     this.emit('info', this.app.config.getPath(this.app.config.SERVER_ROOT));
+    return this;
+  }
+
+  cmdBuild(args: ParsedArgs): ShowMdCmdParser {
+    this.app.parser.build(args.dir ?? this.app.config.getPath, args.output);
     return this;
   }
 
