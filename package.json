@@ -1,6 +1,6 @@
 {
   "name": "show-md",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "show-md is a small nodejs server application which provides files on a HTTP server and converts md files into html files using showdown.",
   "keywords": [
     "markdown",
