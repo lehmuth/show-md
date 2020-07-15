@@ -76,10 +76,34 @@ export class ShowMdParser extends EventEmitter {
   }
 
   build(inputDir: string, outputDir: string): boolean {
+    this.converter = this.initConverter(true);
+
+    this.buildDir(inputDir, outputDir);
+
+    // Copy Resources
+    let resourcesInputDir = path.resolve(__dirname, '../public');
+    let resourcesOutputDir = path.resolve(outputDir, 'resources');
+    this.buildDir(resourcesInputDir, resourcesOutputDir);
+
+    // Copy fonts
+    let fontsInputDir = path.resolve(__dirname, '../../assets/fonts');
+    let fontsOutputDir = path.resolve(outputDir, 'resources/fonts');
+    this.buildDir(fontsInputDir, fontsOutputDir);
+
+    // Copy icons
+    let iconsInputDir = path.resolve(__dirname, '../../assets/icons');
+    this.buildDir(iconsInputDir, outputDir);
+
+    this.converter = this.initConverter(false);
+    return false;
+  }
+
+  private buildDir(inputDir: string, outputDir: string): boolean {
     let inputStats = fs.statSync(inputDir);
 
     if (!inputStats.isDirectory()) {
       console.log('Your specified input is no directory!');
+      return false;
     }
 
     if (fs.existsSync(outputDir)) {
@@ -92,44 +116,51 @@ export class ShowMdParser extends EventEmitter {
       fs.mkdirSync(outputDir);
     }
 
-    fs.readdir(inputDir, (err, files) => {
+    let files: string[] = [];
+    try {
+      files = fs.readdirSync(inputDir);
+    } catch (err) {
       //handling error
       if (err) {
         console.log('Unable to scan input directory: ' + inputDir);
         return false;
       }
+    }
 
-      this.converter = this.initConverter(true);
-      //listing all files
-      files.forEach((file) => {
-        let fileInputPath = path.resolve(inputDir, file);
-        let fileOutputPath = path.resolve(outputDir, file);
-        let stat = fs.statSync(fileInputPath);
-        if (stat.isDirectory()) {
-          this.build(fileInputPath, fileOutputPath);
-        } else if (file.match(/.*\.(md)|(MD)$/i)) {
-          let data = fs.readFileSync(fileInputPath, 'utf-8');
-          this.setFilePath(inputDir);
-          // Rename Readme.md to index.md
-          fileOutputPath.replace(/.*(README).md$/i, '$1index$2');
-          // Rename markdown file to html file
-          fileOutputPath = fileOutputPath.slice(0, -2) + 'html';
+    //listing all files
+    files.forEach((file) => {
+      let fileInputPath = path.resolve(inputDir, file);
+      let fileOutputPath = path.resolve(outputDir, file);
+      let stat = fs.statSync(fileInputPath);
+      if (stat.isDirectory()) {
+        this.buildDir(fileInputPath, fileOutputPath);
+      } else if (file.match(/.*\.md$/i)) {
+        let data = fs.readFileSync(fileInputPath, 'utf-8');
+        this.setFilePath(inputDir);
+        // Rename Readme.md to index.md
+        fileOutputPath.replace(/(.*)README(.md)$/i, '$1index$2');
+        // Rename markdown file to html file
+        fileOutputPath = fileOutputPath.slice(0, -2) + 'html';
+        console.log('md file: ', fileOutputPath);
+        try {
           fs.writeFileSync(fileOutputPath, this.mdToHtml(data));
-        } else if (file.match(/.*\.(jpg|png|gif|ico|ttf|css|js)$/i)) {
-          fs.writeFileSync(fileOutputPath, fs.readFileSync(fileInputPath));
-        } else {
-          console.log('illegal file extension: ', file);
+        } catch (err) {
+          console.log(err);
         }
-      });
+      } else if (file.match(/.*\.(jpg|png|gif|ico|ttf|css|js|txt)$/i)) {
+        console.log('asset file: ', fileOutputPath);
+        try {
+          fs.writeFileSync(fileOutputPath, fs.readFileSync(fileInputPath));
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        console.log('illegal file extension: ', file);
+      }
 
-      this.converter = this.initConverter(false);
+      return true;
     });
 
-    // Copy Resources
-    let resourcesInputDir = path.resolve(__dirname, '../public');
-    let resourcesOutputDir = path.resolve(outputDir, 'resources');
-    this.build(resourcesInputDir, resourcesOutputDir);
-
-    return true;
+    return false;
   }
 }
