@@ -98,7 +98,7 @@ export class ShowMdConfig extends EventEmitter {
   }
 
   getStylesheet(): string {
-    return this.stylesheetName;
+    return this.stylesheetName + ".css";
   }
 
   getDefinedStylesheets(): string[] {
