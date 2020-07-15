@@ -5,6 +5,7 @@ import include from './extensions/include';
 import replaceLinks from './extensions/replace-links';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 export class ShowMdParser extends EventEmitter {
   config: ShowMdConfig;
@@ -100,13 +101,16 @@ export class ShowMdParser extends EventEmitter {
         //listing all files
         files.forEach((file) => {
             let fileInputPath = path.resolve(inputDir, file);
-            let stat = fs.statSync(fileInputPath);
             let fileOutputPath = path.resolve(outputDir, file);
+            let stat = fs.statSync(fileInputPath);
             if(stat.isDirectory()) {
               this.build(fileInputPath, fileOutputPath);
             } else if (file.match(/.*\.(md)|(MD)$/i)){
               let data = fs.readFileSync(fileInputPath, "utf-8");
               this.setFilePath(inputDir);
+              // Rename Readme.md to index.md
+              fileOutputPath.replace(/.*(README).md$/i, "$1index$2");
+              // Rename markdown file to html file
               fileOutputPath = fileOutputPath.slice(0, -2) + 'html';
               fs.writeFileSync(fileOutputPath, this.mdToHtml(data));
             } else if (file.match(/.*\.(jpg|png|gif|ico|ttf|css|js)$/i)) {
@@ -118,6 +122,11 @@ export class ShowMdParser extends EventEmitter {
 
         this.converter = this.initConverter(false);
     });
+
+    // Copy Resources
+    let resourcesInputDir = path.resolve(__dirname, "public"); 
+    let resourcesOutputDir = path.resolve(outputDir, "resources");
+    this.build(resourcesInputDir, resourcesOutputDir);
 
     return true;
   }
