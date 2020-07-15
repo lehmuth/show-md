@@ -3,6 +3,7 @@ import { ShowMdConfig } from '../config/config';
 import { Converter, Extension, extension } from 'showdown';
 import include from './extensions/include';
 import replaceLinks from './extensions/replace-links';
+import replaceReadme from './extensions/replace-readme';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -16,6 +17,7 @@ export class ShowMdParser extends EventEmitter {
     // Initialize and configure showdown converter
     extension('include', include);
     extension('replaceLinks', replaceLinks);
+    extension('replaceReadme', replaceReadme);
 
     this.converter = this.initConverter(false);
   }
@@ -25,6 +27,7 @@ export class ShowMdParser extends EventEmitter {
     extensions.push('include');
     if (build) {
       extensions.push('replaceLinks');
+      extensions.push('replaceReadme');
     }
 
     let converter = new Converter({ extensions });
@@ -138,7 +141,10 @@ export class ShowMdParser extends EventEmitter {
         let data = fs.readFileSync(fileInputPath, 'utf-8');
         this.setFilePath(inputDir);
         // Rename Readme.md to index.md
-        fileOutputPath.replace(/(.*)README(.md)$/i, '$1index$2');
+        fileOutputPath = fileOutputPath.replace(
+          /(.*)README(\.md)$/im,
+          '$1index$2'
+        );
         // Rename markdown file to html file
         fileOutputPath = fileOutputPath.slice(0, -2) + 'html';
         console.log('md file: ', fileOutputPath);
