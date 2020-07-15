@@ -29,7 +29,7 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
 
     // Add route for stylesheets, defined in config.stylesheets
     for(let style of server.getConfig().getDefinedStylesheets()) {
-        router.get("/ressources/style/" + style, (req: Request, res: Response, next: NextFunction) => {
+        router.get("/resources/style/" + style, (req: Request, res: Response, next: NextFunction) => {
             let href: string = server.getConfig().getStylesheetPath(style);
             res.sendFile(href, (err) => {
                 if (err) {
