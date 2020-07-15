@@ -32,7 +32,7 @@ export class ShowMdConfig extends EventEmitter {
     ];
     this.stylesheets = (defaultConfig.stylesheets as [string, string][]) ?? [
       ['default', '{APP_ROOT}/build/public/default.css'],
-      ['github', '{APP_ROOT}/libs/github.css'],
+      ['github', '{APP_ROOT}/build/public/github.css'],
       ['none', '{APP_ROOT}/build/public/none.css'],
     ];
     this.pathVariables = (defaultConfig.pathVariables as [
