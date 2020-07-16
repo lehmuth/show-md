@@ -18,17 +18,13 @@ export default {
 }
 
 export function getGalleryImports(): string {
-    if(true) {
-        return `
-            <link rel="stylesheet" href="/resources/css/gallery.css">
-            <link rel="stylesheet" href="/resources/css/lightgallery.min.css">
-            <script src="/resources/js/lightgallery.min.js" defer></script>
-            <script src="/resources/js/lg-zoom.min.js" defer></script>
-            <script src="/resources/js/lg-thumbnail.min.js" defer></script>
-            <script src="/resources/js/lg-fullscreen.min.js" defer></script>
-            <script src="/resources/js/gallery.js" defer></script>
-            `;
-    } else {
-        return '';
-    }
+    return `
+        <link rel="stylesheet" href="/resources/css/gallery.css">
+        <link rel="stylesheet" href="/resources/css/lightgallery.min.css">
+        <script src="/resources/js/lightgallery.min.js" defer></script>
+        <script src="/resources/js/lg-zoom.min.js" defer></script>
+        <script src="/resources/js/lg-thumbnail.min.js" defer></script>
+        <script src="/resources/js/lg-fullscreen.min.js" defer></script>
+        <script src="/resources/js/gallery.js" defer></script>
+        `;
 }
