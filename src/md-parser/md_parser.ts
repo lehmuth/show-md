@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import { ShowMdConfig } from '../config/config';
 import { Converter, Extension, extension } from 'showdown';
 import include from './extensions/include';
+import gallery, { getGalleryImports } from './extensions/gallery';
 import replaceLinks from './extensions/replace-links';
 import replaceReadme from './extensions/replace-readme';
 import path from 'path';
@@ -16,6 +17,7 @@ export class ShowMdParser extends EventEmitter {
     this.config = config ?? new ShowMdConfig();
     // Initialize and configure showdown converter
     extension('include', include);
+    extension('gallery', gallery);
     extension('replaceLinks', replaceLinks);
     extension('replaceReadme', replaceReadme);
 
@@ -25,6 +27,7 @@ export class ShowMdParser extends EventEmitter {
   private initConverter(build: boolean): Converter {
     let extensions = [];
     extensions.push('include');
+    extensions.push('gallery');
     if (build) {
       extensions.push('replaceLinks');
       extensions.push('replaceReadme');
@@ -68,6 +71,7 @@ export class ShowMdParser extends EventEmitter {
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/resources/style/${this.config.getStylesheet()}"/>
+    ${getGalleryImports(this.converter)}
   </head>
   <body>
     <div class="markdown-body">

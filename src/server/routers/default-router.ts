@@ -29,7 +29,7 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
 
     // Add route for stylesheets, defined in config.stylesheets
     for(let style of server.getConfig().getDefinedStylesheets()) {
-        router.get("/resources/style/" + style, (req: Request, res: Response, next: NextFunction) => {
+        router.get("/resources/style/" + style + ".css", (req: Request, res: Response, next: NextFunction) => {
             let href: string = server.getConfig().getStylesheetPath(style);
             res.sendFile(href, (err) => {
                 if (err) {
@@ -39,7 +39,10 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
                 }
             });
         });
+        console.log("Route: " + "/resources/style/" + style + ".css" + " initialized");
     }
+
+    console.log("Hi");
 
     router.all("/*", (req: Request, res: Response, next: NextFunction) => {
         next(new RouterError(404, 'File not found'));

@@ -66,6 +66,7 @@ input.on('data', function (data) {
 });
 
 console.log('Show-md started.\n');
+console.log("Hi");
 
 //parse initial command
 cmdParser.parse(process.argv.slice(2));
