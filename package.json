@@ -37,14 +37,19 @@
     "test": "node scripts/test-all.js",
     "preversion": "npm run build && npm test",
     "postversion": "git push && git push --tags",
+    "prebuild": "node scripts/prebuild.js",
     "build": "tsc",
-    "postbuild": "copyfiles src/config/default.json src/public/**/* build -V -u 1",
+    "postbuild": "node scripts/postbuild.js",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/bin/show-md.ts start",
     "prod": "npm run build && node ./build/bin/show-md.js"
   },
   "config": {},
   "dependencies": {
     "express": "^4.17.1",
+    "lg-fullscreen.js": "^1.2.0",
+    "lg-thumbnail.js": "^1.2.0",
+    "lg-zoom.js": "^1.2.0",
+    "lightgallery.js": "^1.2.0",
     "minimist": "^1.2.5",
     "showdown": "^1.9.1",
     "simple-node-logger": "^18.12.24"
@@ -54,9 +59,9 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^13.13.14",
     "@types/showdown": "^1.9.3",
-    "copyfiles": "^2.3.0",
     "standard": "^14.3.4",
     "ts-node-dev": "^1.0.0-pre.51",
+    "copyfiles": "^2.3.0",
     "typescript": "^3.9.6"
   }
 }

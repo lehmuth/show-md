@@ -20,9 +20,9 @@ export class ShowMdServer extends EventEmitter{
     this.parser = parser ?? new ShowMdParser(this.config);
     let exp: Express = express();
     for(let dir of this.config.getHtDirs()) {
-      exp.use(setUpDirectoryRouter(this, dir));
+      setUpDirectoryRouter(this, dir, exp);
     }
-    exp.use(setUpDefaultRouter(this));
+    setUpDefaultRouter(this, exp);
     this.httpServer = new HttpServer(exp);
     this.httpsServer = new HttpsServer(exp);
   }

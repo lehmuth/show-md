@@ -70,8 +70,8 @@ export class ShowMdParser extends EventEmitter {
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/resources/style/${this.config.getStylesheet()}"/>
-    ${getGalleryImports(this.converter)}
+    <link rel="stylesheet" type="text/css" href="/resources/css/${this.config.getStylesheet()}"/>
+    ${getGalleryImports()}
   </head>
   <body>
     <div class="markdown-body">
@@ -157,7 +157,7 @@ export class ShowMdParser extends EventEmitter {
         } catch (err) {
           console.log(err);
         }
-      } else if (file.match(/.*\.(jpg|png|gif|ico|ttf|css|js|txt)$/i)) {
+      } else if (file.match(/.*\.(jpg|png|svg|gif|ico|ttf|eot|woff|css|js)$/i)) {
         console.log('asset file: ', fileOutputPath);
         try {
           fs.writeFileSync(fileOutputPath, fs.readFileSync(fileInputPath));

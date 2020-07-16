@@ -1,0 +1,21 @@
+.gallery {
+    height: 150px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 20px 0;
+    white-space: nowrap;
+}
+
+.gallery>a>img {
+    height: 100%;
+    margin: 0 5px;
+}
+
+.gallery>a:first-child>img {
+    margin-left: 0;
+}
+
+.gallery>a:last-child>img {
+    margin-right: 0;
+}

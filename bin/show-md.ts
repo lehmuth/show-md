@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { getDefaultApp, ShowMdCmdParser } from '../app';
+import { getDefaultApp, ShowMdCmdParser } from '../src/app';
 import path from 'path';
 import fs from 'fs';
 const SimpleNodeLogger = require('simple-node-logger');
@@ -66,7 +66,6 @@ input.on('data', function (data) {
 });
 
 console.log('Show-md started.\n');
-console.log("Hi");
 
 //parse initial command
 cmdParser.parse(process.argv.slice(2));

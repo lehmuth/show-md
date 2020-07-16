@@ -9,9 +9,9 @@
         "txt"
     ],
     "stylesheets": [
-        ["default", "{PUBLIC}/default.css"],
-        ["github", "{LIBS}/github.css"],
-        ["none", "{PUBLIC}/none.css"]
+        ["default", "{PUBLIC}/css/default.css"],
+        ["github", "{PUBLIC}/css/github.css"],
+        ["none", "{PUBLIC}/css/none.css"]
     ],
     "pathVariables": [
         ["LOGS", "{APP_ROOT}/logs"]

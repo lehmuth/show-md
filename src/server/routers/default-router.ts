@@ -1,54 +1,32 @@
 import path from 'path';
 import url from 'url';
 import fs from 'fs';
-import { Request, Response, Router, NextFunction } from 'express';
+import express, { Express, Request, Response, Router, NextFunction } from 'express';
 import { RouterError } from '../router-errors';
 import { ShowMdServer } from '../server';
 
-export function setUpDefaultRouter(server: ShowMdServer): Router {
-
-    const router: Router = Router();
+export function setUpDefaultRouter(server: ShowMdServer, exp: Express): void {
     
-    router.use((req: Request, res: Response, next: Function) => {
+    exp.use((req: Request, res: Response, next: Function) => {
         let href = url.parse(req.url, true).path;
         server.emit('info', 'REQUEST: ' + href);
         next();
     });
 
-    // Add route for default favicon
-    router.get("/favicon.ico", (req: Request, res: Response, next: NextFunction) => {
-        let href = path.join(__dirname, '../../../assets/icons/favicon.ico');
-        res.sendFile(href, (err) => {
-            if (err) {
-                next();
-            } else {
-                server.emit('info', 'RESPONSE: ' + href);
-            }
-        });
+    //redirect favicon
+    exp.get("/favicon.ico", (req: Request, res: Response, next: Function) => {
+        req.url = req.baseUrl + '/resources/favicon.ico';
+        console.log('redirected request to', req.url);
     });
 
-    // Add route for stylesheets, defined in config.stylesheets
-    for(let style of server.getConfig().getDefinedStylesheets()) {
-        router.get("/resources/style/" + style + ".css", (req: Request, res: Response, next: NextFunction) => {
-            let href: string = server.getConfig().getStylesheetPath(style);
-            res.sendFile(href, (err) => {
-                if (err) {
-                    next();
-                } else {
-                    server.emit('info', 'RESPONSE: ' + href);
-                }
-            });
-        });
-        console.log("Route: " + "/resources/style/" + style + ".css" + " initialized");
-    }
+    // Add route for public fallback files
+    exp.use("/resources", express.static(__dirname + '/../../public'));
 
-    console.log("Hi");
-
-    router.all("/*", (req: Request, res: Response, next: NextFunction) => {
+    exp.all("/*", (req: Request, res: Response, next: NextFunction) => {
         next(new RouterError(404, 'File not found'));
     });
 
-    router.use((err: RouterError, req: Request, res: Response, next: NextFunction) => {
+    exp.use((err: RouterError, req: Request, res: Response, next: NextFunction) => {
         if (err) {
             let errorcode =  err.code ?? 500;
             let errorpath = server.getConfig().getErrorFile(errorcode);
@@ -59,6 +37,4 @@ export function setUpDefaultRouter(server: ShowMdServer): Router {
             next(err);
         }
     });
-
-    return router;
 }
