@@ -143,7 +143,7 @@ export class ShowMdParser extends EventEmitter {
         this.buildDir(fileInputPath, fileOutputPath);
       } else if (file.match(/.*\.md$/i)) {
         let data = fs.readFileSync(fileInputPath, 'utf-8');
-        this.setFilePath(inputDir);
+        this.setFilePath(fileInputPath);
         // Rename Readme.md to index.md
         fileOutputPath = fileOutputPath.replace(
           /(.*)README(\.md)$/im,
@@ -157,7 +157,7 @@ export class ShowMdParser extends EventEmitter {
         } catch (err) {
           console.log(err);
         }
-      } else if (file.match(/.*\.(jpg|png|svg|gif|ico|ttf|eot|woff|css|js)$/i)) {
+      } else if (file.match(/.*\.(jpe?g|png|svg|gif|ico|ttf|eot|woff|css|js)$/i)) {
         console.log('asset file: ', fileOutputPath);
         try {
           fs.writeFileSync(fileOutputPath, fs.readFileSync(fileInputPath));
