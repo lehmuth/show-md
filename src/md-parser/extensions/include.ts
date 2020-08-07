@@ -46,17 +46,18 @@ export default {
 					});
 					// Handle special case of empty last value.
 					if (/,\s*$/.test(line)) a.push('');
-						a.forEach(function (cell) {
-							if(first)
-								html += "<th>" + cell + "</th>"
-							else
-								html += "<td>" + cell + "</td>"
-						})
-						if (first) {
-							html += "</tr></thead>"
-							first = false;
-						} else
-							html += "</tr>"
+					
+					a.forEach(function (cell) {
+						if(first)
+							html += "<th>" + cell + "</th>"
+						else
+							html += "<td>" + cell + "</td>"
+					})
+					if (first) {
+						html += "</tr></thead>"
+						first = false;
+					} else
+						html += "</tr>"
 				});
 				return html += "</table>"
 			} else {
@@ -66,3 +67,5 @@ export default {
 		});
 	}
 }
+
+

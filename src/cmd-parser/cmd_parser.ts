@@ -102,20 +102,6 @@ export class ShowMdCmdParser extends EventEmitter {
     return this;
   }
 
-  cmdHelp(args: ParsedArgs): ShowMdCmdParser {
-    this.emit(
-      'info',
-      `
-    root      to print current server root directory.
-    status    to show current options.
-    start     to start the server.
-    stop      to stop the server.
-    exit      to stop the server and shut down show-md.
-    help      to show this help screen.
-    `
-    );
-    return this;
-  }
 
   cmdRoot(args: ParsedArgs): ShowMdCmdParser {
     this.emit('info', this.app.config.getPath(this.app.config.SERVER_ROOT));

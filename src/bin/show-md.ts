@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { getDefaultApp, ShowMdCmdParser } from '../src/app';
+import { getDefaultApp, ShowMdCmdParser } from '../app';
 import path from 'path';
 import fs from 'fs';
 const SimpleNodeLogger = require('simple-node-logger');
